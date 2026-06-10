@@ -1,7 +1,3 @@
-// =============================================================
-// AUTH — Wrapper Firebase Auth + fallback localStorage (mode démo)
-// =============================================================
-
 import { firebaseConfig, isFirebaseConfigured } from "./firebase-config.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
@@ -22,9 +18,6 @@ if (isFirebaseConfigured) {
 }
 
 export { auth, db };
-
-// ---------- DEMO MODE (localStorage) ----------------------------
-// Used when Firebase config isn't set yet. Lets the UI be fully clickable.
 
 const DEMO_USERS_KEY = "crous_demo_users";
 const DEMO_SESSION_KEY = "crous_demo_session";
@@ -55,8 +48,6 @@ function seedDemoIfEmpty() {
 }
 seedDemoIfEmpty();
 
-// ---------- PUBLIC API ----------------------------------------
-
 export async function signUp({ email, password, displayName }) {
   if (auth) {
     const cred = await createUserWithEmailAndPassword(auth, email, password);
@@ -66,7 +57,6 @@ export async function signUp({ email, password, displayName }) {
     });
     return cred.user;
   }
-  // demo
   const users = getDemoUsers();
   if (users[email]) throw new Error("Email déjà inscrit");
   const uid = "demo-" + Math.random().toString(36).slice(2, 9);
@@ -81,7 +71,6 @@ export async function signIn({ email, password }) {
     const cred = await signInWithEmailAndPassword(auth, email, password);
     return cred.user;
   }
-  // demo
   const users = getDemoUsers();
   const u = users[email];
   if (!u || u.password !== password) throw new Error("Identifiants incorrects");
@@ -112,19 +101,15 @@ export async function getCurrentUserWithRole() {
       });
     });
   }
-  // demo
   const email = localStorage.getItem(DEMO_SESSION_KEY);
   if (!email) return null;
   const u = getDemoUsers()[email];
   return u || null;
 }
-
-// Used by guarded pages
-export async function requireAuth(role /* "client" | "admin" | null */) {
+export async function requireAuth(role) {
   const u = await getCurrentUserWithRole();
   if (!u) { window.location.href = "login.html"; return null; }
   if (role && u.role !== role) {
-    // wrong role — bounce
     window.location.href = u.role === "admin" ? "admin.html" : "dashboard.html";
     return null;
   }
