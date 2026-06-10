@@ -41,7 +41,6 @@
         </div>
       </div>
 
-      <!-- Decorative crosshair -->
       <svg style="position: absolute; bottom: -120px; right: -120px; opacity: .08; pointer-events: none;" width="500" height="500" viewBox="0 0 500 500">
         <circle cx="250" cy="250" r="240" fill="none" stroke="white" stroke-width="1"/>
         <circle cx="250" cy="250" r="180" fill="none" stroke="white" stroke-width="1"/>
@@ -69,7 +68,6 @@
           <p style="color: var(--stone); font-family: var(--ff-display); font-style: italic; font-size: 18px; margin-bottom: 24px;">
             Reprenez où vous vous étiez arrêté.
           </p>
-
           <div class="field">
             <label>Email</label>
             <input type="email" name="email" placeholder="vous@exemple.com" required />
@@ -78,9 +76,7 @@
             <label>Mot de passe</label>
             <input type="password" name="password" placeholder="••••••••" required />
           </div>
-
           <button type="submit" class="btn" style="margin-top: 24px; width: 100%; justify-content: center;">Entrer dans l'espace</button>
-
           <p id="loginStatus" class="kicker" style="margin-top: 16px; color: var(--blood); min-height: 16px;"></p>
         </form>
 
@@ -90,11 +86,9 @@
           <p style="color: var(--stone); font-family: var(--ff-display); font-style: italic; font-size: 18px; margin-bottom: 24px;">
             Vous avez reçu un email d'invitation après votre entretien.
           </p>
-
           <div class="field"><label>Nom complet</label><input type="text" name="displayName" required /></div>
           <div class="field"><label>Email</label><input type="email" name="email" required /></div>
           <div class="field"><label>Mot de passe (8 caractères min)</label><input type="password" name="password" minlength="8" required /></div>
-
           <button type="submit" class="btn" style="margin-top: 24px; width: 100%; justify-content: center;">Créer mon espace</button>
           <p id="signupStatus" class="kicker" style="margin-top: 16px; color: var(--blood); min-height: 16px;"></p>
         </form>
@@ -107,31 +101,30 @@
   </main>
 
   <script type="module">
-    import { signIn, signUp, routeAfterLogin, getCurrentUserWithRole } from "auth.js";
+    import { signIn, signUp, routeAfterLogin, getCurrentUserWithRole } from "./auth.js";
 
-    // Auto-redirect if already logged in
     getCurrentUserWithRole().then(u => { if (u) routeAfterLogin(u); });
 
-    const tabLogin = document.getElementById("tabLogin");
+    const tabLogin  = document.getElementById("tabLogin");
     const tabSignup = document.getElementById("tabSignup");
-    const loginForm = document.getElementById("loginForm");
+    const loginForm  = document.getElementById("loginForm");
     const signupForm = document.getElementById("signupForm");
 
     function switchTab(which) {
       const isLogin = which === "login";
-      tabLogin.style.borderColor = isLogin ? "var(--blood)" : "transparent";
-      tabLogin.style.color = isLogin ? "var(--ink)" : "var(--stone)";
+      tabLogin.style.borderColor  = isLogin ? "var(--blood)" : "transparent";
+      tabLogin.style.color        = isLogin ? "var(--ink)"   : "var(--stone)";
       tabSignup.style.borderColor = !isLogin ? "var(--blood)" : "transparent";
-      tabSignup.style.color = !isLogin ? "var(--ink)" : "var(--stone)";
-      loginForm.style.display = isLogin ? "" : "none";
+      tabSignup.style.color       = !isLogin ? "var(--ink)"   : "var(--stone)";
+      loginForm.style.display  = isLogin  ? "" : "none";
       signupForm.style.display = !isLogin ? "" : "none";
     }
-    tabLogin.addEventListener("click", () => switchTab("login"));
+    tabLogin.addEventListener("click",  () => switchTab("login"));
     tabSignup.addEventListener("click", () => switchTab("signup"));
 
     loginForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const data = Object.fromEntries(new FormData(loginForm).entries());
+      const data   = Object.fromEntries(new FormData(loginForm).entries());
       const status = document.getElementById("loginStatus");
       status.textContent = "Authentification…"; status.style.color = "var(--stone)";
       try {
@@ -146,7 +139,7 @@
 
     signupForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const data = Object.fromEntries(new FormData(signupForm).entries());
+      const data   = Object.fromEntries(new FormData(signupForm).entries());
       const status = document.getElementById("signupStatus");
       status.textContent = "Création du compte…"; status.style.color = "var(--stone)";
       try {
@@ -159,14 +152,12 @@
       }
     });
 
-    // Field focus
     document.querySelectorAll(".field").forEach(f => {
       const input = f.querySelector("input");
       input?.addEventListener("focus", () => f.classList.add("field--active"));
       input?.addEventListener("blur",  () => f.classList.remove("field--active"));
     });
 
-    // Cursor
     const cursor = document.getElementById('cursor');
     document.addEventListener('mousemove', (e) => {
       cursor.style.left = e.clientX + 'px';

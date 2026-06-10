@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Crous_Coaching — Administration</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body>
 
@@ -181,8 +181,8 @@
   <div id="toast" class="toast">Enregistré</div>
 
   <script type="module">
-    import { requireAuth, signOutUser, signUp } from "./assets/js/auth.js";
-    import { loadProfile, saveProfile, newEntry, listAthletes, listInquiries } from "./assets/js/profile.js";
+    import { requireAuth, signOutUser, signUp } from "./auth.js";
+    import { loadProfile, saveProfile, newEntry, listAthletes, listInquiries } from "./profile.js";
 
     const admin = await requireAuth("admin");
     if (!admin) throw new Error("redirect");
@@ -360,7 +360,7 @@
       if (!editing) return;
       const newMetrics = document.getElementById("editMetrics").value;
       // Demo mode: edit demo_users; Firebase mode: update user doc
-      const { db, auth } = await import("./assets/js/auth.js");
+      const { db, auth } = await import("./auth.js");
       if (db) {
         const { doc, updateDoc } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
         await updateDoc(doc(db, "users", editing.uid), { metrics: newMetrics });
