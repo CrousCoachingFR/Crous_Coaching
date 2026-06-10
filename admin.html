@@ -12,6 +12,7 @@
 
   <div class="shell">
 
+    <!-- ============ SIDEBAR ============ -->
     <aside class="shell__side">
       <a href="index.html" class="brand" style="color: var(--paper);">
         <span class="brand__mark">C</span>
@@ -36,8 +37,10 @@
       </div>
     </aside>
 
+    <!-- ============ MAIN ============ -->
     <main class="shell__main">
 
+      <!-- ATHLETES LIST -->
       <section class="panel is-active" data-panel="athletes">
         <div class="panel-head">
           <h1><span class="num">01</span><em>Athlètes</em> suivis.</h1>
@@ -71,6 +74,7 @@
         <div id="clientList" style="border-top: 1px solid var(--ink);"></div>
       </section>
 
+      <!-- INQUIRIES -->
       <section class="panel" data-panel="inquiries">
         <div class="panel-head">
           <h1><span class="num">02</span><em>Candidatures</em> reçues.</h1>
@@ -78,7 +82,8 @@
         </div>
         <div id="inquiriesList"></div>
       </section>
-      
+
+      <!-- EDITOR (athlete profile) -->
       <section class="panel" data-panel="editor">
         <div class="panel-head">
           <h1><span class="num">⌗</span><em id="editName">—</em></h1>
@@ -106,6 +111,7 @@
           </div>
         </div>
 
+        <!-- Tabs to switch section -->
         <div style="display: flex; gap: 0; border-bottom: 1px solid var(--ink); margin-bottom: 32px;">
           <button class="ed-tab is-active" data-ed="training" style="flex: 1; padding: 16px; font-family: var(--ff-mono); font-size: 12px; letter-spacing: .18em; text-transform: uppercase; cursor: pointer; border-bottom: 4px solid var(--blood); margin-bottom: -1px;">01 — Entraînement</button>
           <button class="ed-tab" data-ed="diet" style="flex: 1; padding: 16px; font-family: var(--ff-mono); font-size: 12px; letter-spacing: .18em; text-transform: uppercase; cursor: pointer; border-bottom: 4px solid transparent; margin-bottom: -1px; color: var(--stone);">02 — Nutrition</button>
@@ -155,6 +161,7 @@
     </main>
   </div>
 
+  <!-- Modal: add client -->
   <div id="modalClient" class="modal">
     <div class="modal__card">
       <span class="modal__close" id="modalClose">×</span>
@@ -194,6 +201,7 @@
     links.forEach(a => a.addEventListener("click", (e) => { e.preventDefault(); showPanel(a.dataset.panel); }));
     document.getElementById("backToList").addEventListener("click", () => showPanel("athletes"));
 
+    // ---------- Toast
     function toast(msg) {
       const el = document.getElementById("toast");
       el.textContent = msg; el.classList.add("in");
@@ -201,6 +209,7 @@
     }
     function escapeHtml(s) { return String(s||"").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c])); }
 
+    // ---------- Roster
     async function refreshRoster() {
       const athletes = await listAthletes();
       const inquiries = await listInquiries();
@@ -239,6 +248,7 @@
       });
     }
 
+    // ---------- Inquiries
     async function refreshInquiries() {
       const inquiries = await listInquiries();
       const list = document.getElementById("inquiriesList");
@@ -266,7 +276,8 @@
       `).join("");
     }
 
-    let editing = null;
+    // ---------- Editor
+    let editing = null; // { uid, name, email, metrics, profile }
     async function openEditor(meta) {
       const profile = await loadProfile(meta.uid);
       editing = { uid: meta.uid, name: meta.name, email: meta.email, metrics: meta.metrics, profile };
@@ -313,6 +324,7 @@
       });
     }
 
+    // Editor sub-tabs
     document.querySelectorAll(".ed-tab").forEach(t => t.addEventListener("click", () => {
       const which = t.dataset.ed;
       document.querySelectorAll(".ed-tab").forEach(x => {
@@ -347,6 +359,7 @@
     document.getElementById("saveMetrics").addEventListener("click", async () => {
       if (!editing) return;
       const newMetrics = document.getElementById("editMetrics").value;
+      // Demo mode: edit demo_users; Firebase mode: update user doc
       const { db, auth } = await import("./assets/js/auth.js");
       if (db) {
         const { doc, updateDoc } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
@@ -359,6 +372,7 @@
       toast("Métriques à jour"); refreshRoster();
     });
 
+    // ---------- New client modal
     const modal = document.getElementById("modalClient");
     document.getElementById("addClientBtn").addEventListener("click", () => modal.classList.add("in"));
     document.getElementById("modalClose").addEventListener("click", () => modal.classList.remove("in"));
@@ -370,7 +384,10 @@
       const status = document.getElementById("newClientStatus");
       status.textContent = "Création…"; status.style.color = "var(--stone)";
       try {
+        // Note: in Firebase mode this signs us out of admin and into the new client.
+        // For demo mode it just adds a record. Safer flow is documented in README.
         await signUp(data);
+        // restore admin session on demo mode
         const users = JSON.parse(localStorage.getItem("crous_demo_users") || "{}");
         if (users[data.email]) { users[data.email].metrics = data.metrics || ""; localStorage.setItem("crous_demo_users", JSON.stringify(users)); }
         localStorage.setItem("crous_demo_session", admin.email);
@@ -383,9 +400,11 @@
       }
     });
 
+    // ---------- Init
     await refreshRoster();
     await refreshInquiries();
 
+    // Cursor
     const cursor = document.getElementById('cursor');
     document.addEventListener('mousemove', (e) => {
       cursor.style.left = e.clientX + 'px';

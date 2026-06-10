@@ -1,3 +1,7 @@
+// =============================================================
+// PROFILE — Read/write per-athlete data (training/diet/protocol/notes)
+// =============================================================
+
 import { db } from "./auth.js";
 import {
   doc, getDoc, setDoc, updateDoc, serverTimestamp
@@ -6,9 +10,9 @@ import {
 const LS_KEY = (uid) => `crous_profile_${uid}`;
 
 const EMPTY = {
-  training: [], 
-  diet:     [], 
-  protocol: [], 
+  training: [], // { id, day, name, work, weight }
+  diet:     [], // { id, meal, description, macros }
+  protocol: [], // { id, molecule, dose, freq, duration, notes }
   notes:    "",
   updatedAt: null
 };
@@ -23,6 +27,7 @@ export async function loadProfile(athleteUid) {
     await setDoc(ref, { ...EMPTY, createdAt: serverTimestamp() });
     return { ...EMPTY };
   }
+  // demo
   const raw = localStorage.getItem(LS_KEY(athleteUid));
   if (raw) return { ...EMPTY, ...JSON.parse(raw) };
   return { ...EMPTY };
@@ -45,6 +50,7 @@ export function newEntry(section, data) {
   return { id: uid8(), createdAt: new Date().toISOString(), ...data };
 }
 
+// Used by admin to list all athletes (clients)
 export async function listAthletes() {
   if (db) {
     const { collection, getDocs, query, where } = await import(
@@ -54,6 +60,7 @@ export async function listAthletes() {
     const snap = await getDocs(q);
     return snap.docs.map(d => ({ uid: d.id, ...d.data() }));
   }
+  // demo: pull from demo users store
   const raw = JSON.parse(localStorage.getItem("crous_demo_users") || "{}");
   return Object.values(raw).filter(u => u.role === "client");
 }

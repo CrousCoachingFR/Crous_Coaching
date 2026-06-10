@@ -4,11 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Crous_Coaching — Postuler</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body>
 
   <div class="cursor-dot" id="cursor"></div>
+
+  <!-- ============ MASTHEAD ============ -->
   <header class="masthead">
     <div class="masthead__inner">
       <a href="index.html" class="brand">
@@ -19,16 +21,19 @@
         <a href="index.html">Doctrine</a>
         <a href="coaching.html" class="is-active">Coaching</a>
         <a href="index.html#manifeste">Manifeste</a>
+        <a href="index.html#resultats">Résultats</a>
         <a href="login.html">Espace athlète</a>
       </nav>
       <a href="#postuler" class="nav-cta">Postuler</a>
     </div>
   </header>
+
+  <!-- ============ HERO COMMERCIALE ============ -->
   <section style="border-bottom: 1px solid var(--ink); padding: 80px 0 40px;">
     <div class="wrap">
       <div class="kicker" style="margin-bottom: 24px;">— Programmes 2026 / Vol. II</div>
       <h1 class="display" style="font-size: clamp(64px, 13vw, 200px); max-width: 12ch;">
-        Un <em>cadre</em>. Une exigence.
+        Trois <em>cadres</em>. Une exigence.
       </h1>
       <p style="font-family: var(--ff-display); font-style: italic; font-size: clamp(20px, 2vw, 28px); max-width: 60ch; margin-top: 32px; font-weight: 300;">
         Chaque programme est conçu pour un type d'athlète précis.
@@ -36,6 +41,7 @@
     </div>
   </section>
 
+  <!-- ============ OFFRES ============ -->
   <section id="offres" style="padding: 100px 0;">
     <div class="wrap">
       <div class="section-tag">
@@ -46,6 +52,7 @@
       <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
 
         <div></div>
+        <!-- OFFRE 1 -->
         <article class="card">
           <div class="card__num">N°01 — Essentiel</div>
           <h3 class="card__title">Foundation</h3>
@@ -57,14 +64,9 @@
             <li>Plan nutrition initial</li>
             <li>Support WhatsApp</li>
             <li>Accès espace athlète</li>
-            <li>Ajustements en cours de cycle</li>
-            <li>Refonte du plan training en fonction de tes besoins</li>
-            <li>Aide à une analyse bloodwork</li>
-            <li>Choix molécules &amp; dosages</li>
-            <li>Suivi marqueurs santé</li>
           </ul>
           <div class="card__price">
-            75<small style="display:inline; font-size: 28px;">€</small>
+            149<small style="display:inline; font-size: 28px;">€</small>
             <small>Mois - engagement 1 mois</small>
           </div>
           <a href="#postuler" class="btn btn--ghost" style="margin-top: 16px;">Postuler →</a>
@@ -80,6 +82,7 @@
     </div>
   </section>
 
+  <!-- ============ COMPARATEUR ============ -->
   <section style="background: var(--paper-2); padding: 100px 0; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink);">
     <div class="wrap">
       <div class="section-tag">
@@ -97,14 +100,15 @@
         <tbody style="font-size: 15px;">
           <tr style="border-bottom: 1px solid var(--ink);"><td style="padding: 14px 0;">Programmation entraînement</td><td style="text-align: center;">Hebdo.</td></tr>
           <tr style="border-bottom: 1px solid var(--ink);"><td style="padding: 14px 0;">Nutrition</td><td style="text-align: center;">Initiale</td></tr>
-          <tr style="border-bottom: 1px solid var(--ink);"><td style="padding: 14px 0;">Support</td><td style="text-align: center;">WhatsApp · 5/7</td></tr>
-          <tr style="border-bottom: 1px solid var(--ink);"><td style="padding: 14px 0;">Suivi protocole</td><td style="text-align: center;">✓</td></tr>
-          <tr style="border-bottom: 1px solid var(--ink);"><td style="padding: 14px 0;">Bloodwork pris en charge</td><td style="text-align: center;">✓</td></tr>
+          <tr style="border-bottom: 1px solid var(--ink);"><td style="padding: 14px 0;">Support</td><td style="text-align: center;">WhatsApp · 7/7</td></tr>
+          <tr style="border-bottom: 1px solid var(--ink);"><td style="padding: 14px 0;">Suivi protocole</td><td style="text-align: center;">—</td></tr>
+          <tr style="border-bottom: 1px solid var(--ink);"><td style="padding: 14px 0;">Bloodwork pris en charge</td><td style="text-align: center;">—</td></tr>
         </tbody>
       </table>
     </div>
   </section>
-  
+
+  <!-- ============ FORMULAIRE ============ -->
   <section id="postuler" style="padding: 120px 0;">
     <div class="wrap">
       <div class="section-tag">
@@ -119,12 +123,12 @@
             Une <em>candidature</em> sérieuse mérite des réponses sérieuses.
           </h2>
           <p style="font-family: var(--ff-display); font-style: italic; font-size: 20px; margin-top: 24px; max-width: 36ch;">
-            Aucun automatisme. Si je ne peux pas vous accompagner, je vous le dirai franchement.
+            Réponse personnelle sous 48h. Aucun automatisme. Si je ne peux pas vous accompagner, je vous le dirai franchement.
           </p>
           <div style="margin-top: 40px; padding-top: 24px; border-top: 4px solid var(--ink);">
             <div class="kicker">Disponibilité actuelle</div>
             <div style="display: flex; gap: 12px; align-items: baseline; margin-top: 8px;">
-              <span class="stat-num" style="font-size: 56px;">??</span>
+              <span class="stat-num" style="font-size: 56px;">3</span>
             </div>
           </div>
         </aside>
@@ -188,6 +192,7 @@
     </div>
   </section>
 
+  <!-- ============ FOOTER ============ -->
   <footer class="colophon">
     <div class="wrap">
       <div class="colophon__grid">
@@ -218,13 +223,14 @@
       <div class="colophon__bottom">
         <span>© 2026 Crous_Coaching</span>
         <span>Vol. I — N°01 / 2026</span>
-        <span>France</span>
+        <span>Lyon · France</span>
       </div>
     </div>
   </footer>
 
   <div id="toast" class="toast">Candidature envoyée, une réponse vous sera transmise dans les plus brefs délais.</div>
-  
+
+  <!-- Firebase + inquiry submission -->
   <script type="module">
     import { firebaseConfig } from "./assets/js/firebase-config.js";
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -271,12 +277,14 @@
       }
     });
 
+    // Field focus state
     form.querySelectorAll(".field").forEach(f => {
       const input = f.querySelector("input, textarea, select");
       input?.addEventListener("focus", () => f.classList.add("field--active"));
       input?.addEventListener("blur",  () => f.classList.remove("field--active"));
     });
 
+    // Cursor
     const cursor = document.getElementById('cursor');
     document.addEventListener('mousemove', (e) => {
       cursor.style.left = e.clientX + 'px';

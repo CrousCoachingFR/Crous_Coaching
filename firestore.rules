@@ -1,3 +1,8 @@
+// =============================================================
+// Firestore security rules — Crous_Coaching
+// Deploy with:  firebase deploy --only firestore:rules
+// =============================================================
+
 rules_version = '2';
 
 service cloud.firestore {
@@ -11,6 +16,9 @@ service cloud.firestore {
     }
     function isOwner(uid) { return isSignedIn() && request.auth.uid == uid; }
 
+    // -------- USERS ----------
+    // A user can read/update their own doc. Admin can read/write all.
+    // Role can only be changed by admin.
     match /users/{uid} {
       allow read: if isOwner(uid) || isAdmin();
       allow create: if isOwner(uid) && request.resource.data.role == "client";
@@ -18,11 +26,13 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
+    // -------- PROFILES ----------
     // Each athlete reads/writes their own profile. Admin reads/writes all.
     match /profiles/{uid} {
       allow read, write: if isOwner(uid) || isAdmin();
     }
 
+    // -------- INQUIRIES ----------
     // Anyone (anonymous) can POST a coaching request. Only admin can read/manage.
     match /inquiries/{id} {
       allow create: if true;

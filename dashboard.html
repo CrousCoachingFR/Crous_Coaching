@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Crous_Coaching — Espace athlète</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body>
 
@@ -12,6 +12,7 @@
 
   <div class="shell">
 
+    <!-- ============ SIDEBAR ============ -->
     <aside class="shell__side">
       <a href="index.html" class="brand" style="color: var(--paper);">
         <span class="brand__mark">C</span>
@@ -38,8 +39,10 @@
       </div>
     </aside>
 
+    <!-- ============ MAIN ============ -->
     <main class="shell__main">
 
+      <!-- OVERVIEW -->
       <section class="panel is-active" data-panel="overview">
         <div class="panel-head">
           <h1><span class="num">00</span>Bon retour, <em id="firstName">athlète</em>.</h1>
@@ -83,6 +86,7 @@
         </div>
       </section>
 
+      <!-- TRAINING -->
       <section class="panel" data-panel="training">
         <div class="panel-head">
           <h1><span class="num">01</span>Entraînement.</h1>
@@ -98,7 +102,8 @@
           <button class="btn" type="submit">+ Ajouter</button>
         </form>
       </section>
-      
+
+      <!-- DIET -->
       <section class="panel" data-panel="diet">
         <div class="panel-head">
           <h1><span class="num">02</span>Nutrition.</h1>
@@ -124,6 +129,7 @@
         </form>
       </section>
 
+      <!-- PROTOCOL -->
       <section class="panel" data-panel="protocol">
         <div class="panel-head">
           <h1><span class="num">03</span>Protocole.</h1>
@@ -145,6 +151,7 @@
         </form>
       </section>
 
+      <!-- NOTES -->
       <section class="panel" data-panel="notes">
         <div class="panel-head">
           <h1><span class="num">04</span>Notes coach.</h1>
@@ -171,16 +178,19 @@
     const user = await requireAuth("client");
     if (!user) throw new Error("redirect");
 
+    // -------- Header / user
     document.getElementById("firstName").textContent = (user.displayName || "athlète").split(" ")[0];
     document.getElementById("userName").textContent = user.displayName || user.email;
     document.getElementById("userRole").textContent = "Athlète · " + (user.metrics || "");
     document.getElementById("userInitial").textContent = (user.displayName || user.email).trim().charAt(0).toUpperCase();
 
+    // -------- Logout
     document.getElementById("logoutBtn").addEventListener("click", async () => {
       await signOutUser();
       window.location.href = "login.html";
     });
-    
+
+    // -------- Sidebar nav
     const links = document.querySelectorAll(".side-nav a");
     const panels = document.querySelectorAll(".panel");
     function showPanel(name) {
@@ -190,13 +200,14 @@
     links.forEach(a => a.addEventListener("click", (e) => { e.preventDefault(); showPanel(a.dataset.panel); }));
     document.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => showPanel(b.dataset.go)));
 
+    // -------- Data
     let profile = await loadProfile(user.uid);
     document.getElementById("lastUpdated").textContent = profile.updatedAt
       ? new Date(profile.updatedAt).toLocaleString("fr-FR")
       : "jamais";
 
     function render() {
-
+      // counts
       document.getElementById("trainCount").textContent = profile.training.length;
       document.getElementById("protoCount").textContent = profile.protocol.length;
       const kcal = profile.diet.reduce((acc, e) => {
@@ -207,6 +218,7 @@
       document.getElementById("latestNote").textContent =
         profile.notes && profile.notes.trim() ? profile.notes : "Aucune note pour l'instant.";
 
+      // lists
       renderList("trainList", profile.training);
       renderList("dietList",  profile.diet);
       renderList("protoList", profile.protocol);
@@ -245,6 +257,7 @@
 
     function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c])); }
 
+    // -------- Forms
     function wireForm(formId, section) {
       document.getElementById(formId).addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -265,6 +278,7 @@
       toast("Notes enregistrées");
     });
 
+    // -------- Toast
     function toast(msg) {
       const el = document.getElementById("toast");
       el.textContent = msg;
@@ -275,6 +289,7 @@
 
     render();
 
+    // Cursor
     const cursor = document.getElementById('cursor');
     document.addEventListener('mousemove', (e) => {
       cursor.style.left = e.clientX + 'px';
