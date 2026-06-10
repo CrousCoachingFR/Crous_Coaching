@@ -10,8 +10,7 @@
 <body>
 
   <div class="cursor-dot" id="cursor"></div>
-
-  <!-- ============ MASTHEAD ============ -->
+  
   <header class="masthead">
     <div class="masthead__inner">
       <a href="index.html" class="brand">
@@ -28,11 +27,9 @@
     </div>
   </header>
 
-  <!-- ============ HERO ============ -->
   <section class="hero" style="border-bottom: 1px solid var(--ink);">
     <div class="wrap" style="padding-top: 32px; padding-bottom: 64px;">
 
-      <!-- Cover metadata bar -->
       <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 24px; align-items: center; padding-bottom: 24px;">
         <div class="kicker">Vol. I — N°01 / 2026</div>
         <div class="kicker" style="text-align: center;">— Un journal pour ceux qui s'entraînent vraiment —</div>
@@ -40,7 +37,6 @@
       </div>
       <div class="rule"></div>
 
-      <!-- Headline -->
       <div style="display: grid; grid-template-columns: 1fr; gap: 12px; padding: 60px 0 40px;">
         <h1 class="display" style="font-size: clamp(64px, 13vw, 200px);">
           La <em>force</em> ne se<br/>
@@ -58,7 +54,6 @@
         </h1>
       </div>
 
-      <!-- Sub-hero grid : lead text + key stats -->
       <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 60px; border-top: 1px solid var(--ink); padding-top: 32px;">
         <div>
           <p class="eyebrow" style="margin-bottom: 18px;">Le programme</p>
@@ -85,7 +80,6 @@
     </div>
   </section>
 
-  <!-- ============ MARQUEE ============ -->
   <div class="marquee">
     <div class="marquee__track">
       <span>
@@ -109,7 +103,6 @@
     </div>
   </div>
 
-  <!-- ============ MANIFESTE ============ -->
   <section id="manifeste" style="padding: 100px 0; background: var(--paper-2); border-bottom: 1px solid var(--ink);">
     <div class="wrap">
       <div class="section-tag">
@@ -142,7 +135,6 @@
     </div>
   </section>
 
-  <!-- ============ TROIS PILIERS ============ -->
   <section id="piliers" style="padding: 100px 0;">
     <div class="wrap">
       <div class="section-tag">
@@ -182,7 +174,6 @@
     </div>
   </section>
 
-  <!-- ============ TÉMOIGNAGES ============ -->
   <section style="padding: 120px 0;">
     <div class="wrap">
       <div class="section-tag">
@@ -229,7 +220,6 @@
     </div>
   </section>
 
-  <!-- ============ CTA FINAL ============ -->
   <section style="background: var(--blood); color: var(--paper); padding: 120px 0;">
     <div class="wrap">
       <div style="display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: center;">
@@ -246,7 +236,6 @@
     </div>
   </section>
 
-  <!-- ============ FOOTER ============ -->
   <footer class="colophon">
     <div class="wrap">
       <div class="colophon__grid">
@@ -292,7 +281,6 @@
   </footer>
 
   <script>
-    // Custom cursor
     const cursor = document.getElementById('cursor');
     document.addEventListener('mousemove', (e) => {
       cursor.style.left = e.clientX + 'px';
@@ -303,7 +291,6 @@
       el.addEventListener('mouseleave', () => cursor.classList.remove('lg'));
     });
 
-    // Reveal on scroll
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
     }, { threshold: 0.15 });
