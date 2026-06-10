@@ -9,8 +9,6 @@
 <body>
 
   <div class="cursor-dot" id="cursor"></div>
-
-  <!-- ============ MASTHEAD ============ -->
   <header class="masthead">
     <div class="masthead__inner">
       <a href="index.html" class="brand">
@@ -21,14 +19,11 @@
         <a href="index.html">Doctrine</a>
         <a href="coaching.html" class="is-active">Coaching</a>
         <a href="index.html#manifeste">Manifeste</a>
-        <a href="index.html#resultats">Résultats</a>
         <a href="login.html">Espace athlète</a>
       </nav>
       <a href="#postuler" class="nav-cta">Postuler</a>
     </div>
   </header>
-
-  <!-- ============ HERO COMMERCIALE ============ -->
   <section style="border-bottom: 1px solid var(--ink); padding: 80px 0 40px;">
     <div class="wrap">
       <div class="kicker" style="margin-bottom: 24px;">— Programmes 2026 / Vol. II</div>
@@ -41,7 +36,6 @@
     </div>
   </section>
 
-  <!-- ============ OFFRES ============ -->
   <section id="offres" style="padding: 100px 0;">
     <div class="wrap">
       <div class="section-tag">
@@ -52,7 +46,6 @@
       <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
 
         <div></div>
-        <!-- OFFRE 1 -->
         <article class="card">
           <div class="card__num">N°01 — Essentiel</div>
           <h3 class="card__title">Foundation</h3>
@@ -87,7 +80,6 @@
     </div>
   </section>
 
-  <!-- ============ COMPARATEUR ============ -->
   <section style="background: var(--paper-2); padding: 100px 0; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink);">
     <div class="wrap">
       <div class="section-tag">
@@ -112,8 +104,7 @@
       </table>
     </div>
   </section>
-
-  <!-- ============ FORMULAIRE ============ -->
+  
   <section id="postuler" style="padding: 120px 0;">
     <div class="wrap">
       <div class="section-tag">
@@ -197,7 +188,6 @@
     </div>
   </section>
 
-  <!-- ============ FOOTER ============ -->
   <footer class="colophon">
     <div class="wrap">
       <div class="colophon__grid">
@@ -234,8 +224,7 @@
   </footer>
 
   <div id="toast" class="toast">Candidature envoyée, une réponse vous sera transmise dans les plus brefs délais.</div>
-
-  <!-- Firebase + inquiry submission -->
+  
   <script type="module">
     import { firebaseConfig } from "./assets/js/firebase-config.js";
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -282,14 +271,12 @@
       }
     });
 
-    // Field focus state
     form.querySelectorAll(".field").forEach(f => {
       const input = f.querySelector("input, textarea, select");
       input?.addEventListener("focus", () => f.classList.add("field--active"));
       input?.addEventListener("blur",  () => f.classList.remove("field--active"));
     });
 
-    // Cursor
     const cursor = document.getElementById('cursor');
     document.addEventListener('mousemove', (e) => {
       cursor.style.left = e.clientX + 'px';
