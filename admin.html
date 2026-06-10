@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crous_Coaching — Administration</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+
+  <div class="cursor-dot" id="cursor"></div>
+
+  <div class="shell">
+
+    <!-- ============ SIDEBAR ============ -->
+    <aside class="shell__side">
+      <a href="index.html" class="brand" style="color: var(--paper);">
+        <span class="brand__mark">C</span>
+        <span>Crous<em style="font-style: italic; color: var(--blood)">_</em>Coaching</span>
+      </a>
+
+      <div class="kicker" style="color: var(--blood); margin-top: 24px;">⚡ Console admin</div>
+
+      <nav class="side-nav">
+        <a href="#" data-panel="athletes" class="is-active"><span class="ix">01</span> Athlètes</a>
+        <a href="#" data-panel="inquiries"><span class="ix">02</span> Candidatures</a>
+        <a href="#" data-panel="editor" id="editorLink" style="display:none;"><span class="ix">→</span> Profil sélectionné</a>
+      </nav>
+
+      <div class="shell__user">
+        <div class="avatar" id="userInitial">?</div>
+        <div style="flex: 1; min-width: 0;">
+          <div id="userName" style="font-family: var(--ff-display); font-style: italic; font-size: 18px; overflow: hidden; text-overflow: ellipsis;">…</div>
+          <div class="kicker" style="color: var(--blood);">Administrateur</div>
+        </div>
+        <button id="logoutBtn" title="Déconnexion" style="cursor: pointer; color: var(--paper); font-family: var(--ff-mono); font-size: 14px;">↪</button>
+      </div>
+    </aside>
+
+    <!-- ============ MAIN ============ -->
+    <main class="shell__main">
+
+      <!-- ATHLETES LIST -->
+      <section class="panel is-active" data-panel="athletes">
+        <div class="panel-head">
+          <h1><span class="num">01</span><em>Athlètes</em> suivis.</h1>
+          <div class="kicker">Cliquer sur une ligne pour éditer son espace</div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-bottom: 32px; border-top: 4px solid var(--ink); border-bottom: 4px solid var(--ink);">
+          <div style="padding: 24px; border-right: 1px solid var(--ink);">
+            <div class="stat-num" style="font-size: 64px; color: var(--blood);" id="countTotal">0</div>
+            <div class="kicker" style="color: var(--stone);">Athlètes actifs</div>
+          </div>
+          <div style="padding: 24px; border-right: 1px solid var(--ink);">
+            <div class="stat-num" style="font-size: 64px;" id="countTraining">0</div>
+            <div class="kicker" style="color: var(--stone);">Plans à jour</div>
+          </div>
+          <div style="padding: 24px; border-right: 1px solid var(--ink);">
+            <div class="stat-num" style="font-size: 64px;" id="countProto">0</div>
+            <div class="kicker" style="color: var(--stone);">Sous protocole</div>
+          </div>
+          <div style="padding: 24px;">
+            <div class="stat-num" style="font-size: 64px;" id="countInquiries">0</div>
+            <div class="kicker" style="color: var(--stone);">Candidatures ouvertes</div>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 16px;">
+          <div class="kicker">Roster — édition</div>
+          <button id="addClientBtn" class="btn btn--ghost" style="padding: 12px 18px;">+ Créer un athlète</button>
+        </div>
+
+        <div id="clientList" style="border-top: 1px solid var(--ink);"></div>
+      </section>
+
+      <!-- INQUIRIES -->
+      <section class="panel" data-panel="inquiries">
+        <div class="panel-head">
+          <h1><span class="num">02</span><em>Candidatures</em> reçues.</h1>
+          <div class="kicker">Demandes via le formulaire commercial</div>
+        </div>
+        <div id="inquiriesList"></div>
+      </section>
+
+      <!-- EDITOR (athlete profile) -->
+      <section class="panel" data-panel="editor">
+        <div class="panel-head">
+          <h1><span class="num">⌗</span><em id="editName">—</em></h1>
+          <div>
+            <button class="btn btn--ghost" id="backToList" style="padding: 12px 18px;">← Retour au roster</button>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; margin-bottom: 40px;">
+          <div style="border: 1px solid var(--ink); padding: 18px;">
+            <div class="kicker" style="color: var(--stone);">Email</div>
+            <div id="editEmail" style="font-family: var(--ff-display); font-style: italic; font-size: 22px; margin-top: 4px;">—</div>
+          </div>
+          <div style="border: 1px solid var(--ink); padding: 18px;">
+            <div class="kicker" style="color: var(--stone);">Métriques</div>
+            <div style="display:flex; gap: 8px; align-items: center;">
+              <input id="editMetrics" placeholder="ex. 28 ans · 82 kg · 178 cm"
+                style="font-family: var(--ff-display); font-style: italic; font-size: 20px; flex: 1; border: none; outline: none; padding: 6px 0;"/>
+              <button class="btn btn--ghost" id="saveMetrics" style="padding: 8px 12px; font-size: 10px;">Maj</button>
+            </div>
+          </div>
+          <div style="border: 1px solid var(--ink); padding: 18px;">
+            <div class="kicker" style="color: var(--stone);">Dernière mise à jour</div>
+            <div id="editUpdated" style="font-family: var(--ff-display); font-style: italic; font-size: 22px;">—</div>
+          </div>
+        </div>
+
+        <!-- Tabs to switch section -->
+        <div style="display: flex; gap: 0; border-bottom: 1px solid var(--ink); margin-bottom: 32px;">
+          <button class="ed-tab is-active" data-ed="training" style="flex: 1; padding: 16px; font-family: var(--ff-mono); font-size: 12px; letter-spacing: .18em; text-transform: uppercase; cursor: pointer; border-bottom: 4px solid var(--blood); margin-bottom: -1px;">01 — Entraînement</button>
+          <button class="ed-tab" data-ed="diet" style="flex: 1; padding: 16px; font-family: var(--ff-mono); font-size: 12px; letter-spacing: .18em; text-transform: uppercase; cursor: pointer; border-bottom: 4px solid transparent; margin-bottom: -1px; color: var(--stone);">02 — Nutrition</button>
+          <button class="ed-tab" data-ed="protocol" style="flex: 1; padding: 16px; font-family: var(--ff-mono); font-size: 12px; letter-spacing: .18em; text-transform: uppercase; cursor: pointer; border-bottom: 4px solid transparent; margin-bottom: -1px; color: var(--stone);">03 — Protocole</button>
+          <button class="ed-tab" data-ed="notes" style="flex: 1; padding: 16px; font-family: var(--ff-mono); font-size: 12px; letter-spacing: .18em; text-transform: uppercase; cursor: pointer; border-bottom: 4px solid transparent; margin-bottom: -1px; color: var(--stone);">04 — Notes</button>
+        </div>
+
+        <div class="ed-panel is-active" data-ed="training">
+          <div class="entry-list" id="edTrainList"></div>
+          <form class="entry-form" id="edTrainForm">
+            <div class="field"><label>Jour</label><input type="text" name="day" placeholder="Lun" required maxlength="3"/></div>
+            <div class="field"><label>Exercice</label><input type="text" name="name" required/></div>
+            <div class="field"><label>Travail / Charge</label><input type="text" name="work" required/></div>
+            <button class="btn" type="submit">+ Ajouter</button>
+          </form>
+        </div>
+        <div class="ed-panel" data-ed="diet" style="display:none;">
+          <div class="entry-list" id="edDietList"></div>
+          <form class="entry-form" id="edDietForm">
+            <div class="field"><label>Repas</label>
+              <select name="day" required>
+                <option value="P-DEJ">Petit-déj.</option><option value="DEJ">Déj.</option>
+                <option value="GOÛ">Goûter</option><option value="DÎN">Dîner</option>
+                <option value="INTRA">Intra</option><option value="POST">Post</option>
+              </select>
+            </div>
+            <div class="field"><label>Description</label><input type="text" name="name" required/></div>
+            <div class="field"><label>Macros / kcal</label><input type="text" name="work" required/></div>
+            <button class="btn" type="submit">+ Ajouter</button>
+          </form>
+        </div>
+        <div class="ed-panel" data-ed="protocol" style="display:none;">
+          <div class="entry-list" id="edProtoList"></div>
+          <form class="entry-form" id="edProtoForm">
+            <div class="field"><label>Molécule</label><input type="text" name="day" required/></div>
+            <div class="field"><label>Dosage / Fréquence</label><input type="text" name="name" required/></div>
+            <div class="field"><label>Durée &amp; notes</label><input type="text" name="work" required/></div>
+            <button class="btn" type="submit">+ Ajouter</button>
+          </form>
+        </div>
+        <div class="ed-panel" data-ed="notes" style="display:none;">
+          <textarea id="edNotes" style="width: 100%; min-height: 320px; font-family: var(--ff-display); font-style: italic; font-size: 22px; line-height: 1.5; padding: 24px; border: 1px solid var(--ink); background: var(--paper-2);" placeholder="Notes du coach pour cet athlète…"></textarea>
+          <div style="margin-top: 20px;"><button class="btn" id="edSaveNotes">Enregistrer la note</button></div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Modal: add client -->
+  <div id="modalClient" class="modal">
+    <div class="modal__card">
+      <span class="modal__close" id="modalClose">×</span>
+      <div class="kicker" style="color: var(--blood);">Nouvel athlète</div>
+      <h2 class="display" style="font-size: 48px; margin: 8px 0 24px;">Créer un espace.</h2>
+      <form id="newClientForm">
+        <div class="field"><label>Nom complet</label><input type="text" name="displayName" required/></div>
+        <div class="field"><label>Email</label><input type="email" name="email" required/></div>
+        <div class="field"><label>Mot de passe initial</label><input type="password" name="password" minlength="8" required/></div>
+        <div class="field"><label>Métriques (optionnel)</label><input type="text" name="metrics" placeholder="ex. 28 ans · 82 kg · 178 cm"/></div>
+        <button type="submit" class="btn" style="margin-top: 24px; width: 100%; justify-content: center;">Créer l'athlète</button>
+        <p id="newClientStatus" class="kicker" style="margin-top: 12px; color: var(--blood); min-height: 16px;"></p>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast" class="toast">Enregistré</div>
+
+  <script type="module">
+    import { requireAuth, signOutUser, signUp } from "./assets/js/auth.js";
+    import { loadProfile, saveProfile, newEntry, listAthletes, listInquiries } from "./assets/js/profile.js";
+
+    const admin = await requireAuth("admin");
+    if (!admin) throw new Error("redirect");
+
+    document.getElementById("userName").textContent = admin.displayName || admin.email;
+    document.getElementById("userInitial").textContent = (admin.displayName || admin.email).trim().charAt(0).toUpperCase();
+    document.getElementById("logoutBtn").addEventListener("click", async () => { await signOutUser(); window.location.href = "login.html"; });
+
+    // ---------- Sidebar
+    const links = document.querySelectorAll(".side-nav a");
+    const panels = document.querySelectorAll(".panel");
+    function showPanel(name) {
+      links.forEach(a => a.classList.toggle("is-active", a.dataset.panel === name));
+      panels.forEach(p => p.classList.toggle("is-active", p.dataset.panel === name));
+    }
+    links.forEach(a => a.addEventListener("click", (e) => { e.preventDefault(); showPanel(a.dataset.panel); }));
+    document.getElementById("backToList").addEventListener("click", () => showPanel("athletes"));
+
+    // ---------- Toast
+    function toast(msg) {
+      const el = document.getElementById("toast");
+      el.textContent = msg; el.classList.add("in");
+      clearTimeout(toast._t); toast._t = setTimeout(() => el.classList.remove("in"), 2200);
+    }
+    function escapeHtml(s) { return String(s||"").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c])); }
+
+    // ---------- Roster
+    async function refreshRoster() {
+      const athletes = await listAthletes();
+      const inquiries = await listInquiries();
+      document.getElementById("countTotal").textContent = athletes.length;
+      document.getElementById("countInquiries").textContent = inquiries.filter(i => (i.status||"pending") === "pending").length;
+
+      let withTraining = 0, withProto = 0;
+      const rows = await Promise.all(athletes.map(async (a, i) => {
+        const p = await loadProfile(a.uid);
+        if ((p.training||[]).length) withTraining++;
+        if ((p.protocol||[]).length) withProto++;
+        return `
+          <div class="client-row" data-uid="${a.uid}" data-name="${escapeHtml(a.displayName||a.email)}" data-email="${escapeHtml(a.email)}" data-metrics="${escapeHtml(a.metrics||'')}">
+            <div class="client-row__num">${String(i+1).padStart(2,'0')}</div>
+            <div>
+              <div class="client-row__name">${escapeHtml(a.displayName || a.email)}</div>
+              <div class="client-row__meta">${escapeHtml(a.email)}</div>
+            </div>
+            <div class="client-row__meta">${escapeHtml(a.metrics || '—')}</div>
+            <div class="client-row__meta">
+              ${(p.training||[]).length} séance(s) ·
+              ${(p.diet||[]).length} repas ·
+              ${(p.protocol||[]).length} molécule(s)
+            </div>
+            <div class="client-row__meta">Ouvrir →</div>
+          </div>
+        `;
+      }));
+      document.getElementById("countTraining").textContent = withTraining;
+      document.getElementById("countProto").textContent = withProto;
+
+      const list = document.getElementById("clientList");
+      list.innerHTML = rows.join("") || `<div style="padding: 40px 0; font-family: var(--ff-display); font-style: italic; font-size: 22px; color: var(--stone);">Aucun athlète encore — créez le premier avec le bouton ci-dessus.</div>`;
+      list.querySelectorAll(".client-row").forEach(row => {
+        row.addEventListener("click", () => openEditor(row.dataset));
+      });
+    }
+
+    // ---------- Inquiries
+    async function refreshInquiries() {
+      const inquiries = await listInquiries();
+      const list = document.getElementById("inquiriesList");
+      if (!inquiries.length) {
+        list.innerHTML = `<div style="padding: 40px 0; font-family: var(--ff-display); font-style: italic; font-size: 22px; color: var(--stone);">Aucune candidature reçue pour l'instant.</div>`;
+        return;
+      }
+      list.innerHTML = inquiries.map((i, k) => `
+        <article style="border: 1px solid var(--ink); padding: 28px; margin-bottom: 16px;">
+          <header style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 16px;">
+            <div>
+              <span class="stat-num" style="font-size: 28px; color: var(--blood);">#${String(k+1).padStart(2,'0')}</span>
+              <span style="font-family: var(--ff-display); font-style: italic; font-size: 28px; margin-left: 12px;">${escapeHtml(i.fullName||"—")}</span>
+            </div>
+            <span class="tag tag--blood">${escapeHtml(i.program||"—")}</span>
+          </header>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; font-family: var(--ff-mono); font-size: 12px; color: var(--stone); margin-bottom: 16px;">
+            <div><strong style="color: var(--ink);">Email</strong><br/>${escapeHtml(i.email||"—")}</div>
+            <div><strong style="color: var(--ink);">Métriques</strong><br/>${escapeHtml(i.metrics||"—")}</div>
+            <div><strong style="color: var(--ink);">Expérience</strong><br/>${escapeHtml(i.experience||"—")}</div>
+          </div>
+          <p style="font-family: var(--ff-display); font-style: italic; font-size: 18px; line-height: 1.5;">${escapeHtml(i.goals||"")}</p>
+          ${i.notes ? `<p style="font-family: var(--ff-body); font-size: 14px; color: var(--stone); margin-top: 12px;">${escapeHtml(i.notes)}</p>`:''}
+        </article>
+      `).join("");
+    }
+
+    // ---------- Editor
+    let editing = null; // { uid, name, email, metrics, profile }
+    async function openEditor(meta) {
+      const profile = await loadProfile(meta.uid);
+      editing = { uid: meta.uid, name: meta.name, email: meta.email, metrics: meta.metrics, profile };
+      document.getElementById("editName").textContent = meta.name;
+      document.getElementById("editEmail").textContent = meta.email;
+      document.getElementById("editMetrics").value = meta.metrics || "";
+      document.getElementById("editUpdated").textContent = profile.updatedAt ? new Date(profile.updatedAt).toLocaleString("fr-FR") : "jamais";
+      document.getElementById("editorLink").style.display = "";
+      renderEditor();
+      showPanel("editor");
+    }
+
+    function renderEditor() {
+      renderEntries("edTrainList", editing.profile.training, "training");
+      renderEntries("edDietList",  editing.profile.diet, "diet");
+      renderEntries("edProtoList", editing.profile.protocol, "protocol");
+      document.getElementById("edNotes").value = editing.profile.notes || "";
+    }
+
+    function renderEntries(containerId, items, section) {
+      const c = document.getElementById(containerId);
+      c.innerHTML = "";
+      if (!items.length) {
+        c.innerHTML = `<div style="padding: 32px 0; font-family: var(--ff-display); font-style: italic; font-size: 22px; color: var(--stone); border-bottom: 1px solid var(--ink);">Aucune entrée encore.</div>`;
+        return;
+      }
+      items.forEach((e, i) => {
+        const row = document.createElement("div");
+        row.className = "entry";
+        row.innerHTML = `
+          <div class="entry__day">${escapeHtml(e.day || (i+1))}</div>
+          <div class="entry__name">${escapeHtml(e.name||"")}</div>
+          <div class="entry__meta">${escapeHtml(e.work||"")}</div>
+          <div class="entry__del" data-id="${e.id}">Supprimer</div>
+        `;
+        c.appendChild(row);
+      });
+      c.querySelectorAll(".entry__del").forEach(btn => {
+        btn.addEventListener("click", async () => {
+          editing.profile[section] = editing.profile[section].filter(x => x.id !== btn.dataset.id);
+          editing.profile = await saveProfile(editing.uid, editing.profile);
+          renderEditor(); toast("Entrée supprimée"); refreshRoster();
+        });
+      });
+    }
+
+    // Editor sub-tabs
+    document.querySelectorAll(".ed-tab").forEach(t => t.addEventListener("click", () => {
+      const which = t.dataset.ed;
+      document.querySelectorAll(".ed-tab").forEach(x => {
+        const on = x.dataset.ed === which;
+        x.style.borderColor = on ? "var(--blood)" : "transparent";
+        x.style.color = on ? "var(--ink)" : "var(--stone)";
+      });
+      document.querySelectorAll(".ed-panel").forEach(p => p.style.display = (p.dataset.ed === which) ? "" : "none");
+    }));
+
+    function wireEdForm(formId, section) {
+      document.getElementById(formId).addEventListener("submit", async (e) => {
+        e.preventDefault();
+        if (!editing) return;
+        const data = Object.fromEntries(new FormData(e.target).entries());
+        editing.profile[section].push(newEntry(section, data));
+        editing.profile = await saveProfile(editing.uid, editing.profile);
+        e.target.reset(); renderEditor(); toast("Ajouté"); refreshRoster();
+      });
+    }
+    wireEdForm("edTrainForm", "training");
+    wireEdForm("edDietForm", "diet");
+    wireEdForm("edProtoForm", "protocol");
+
+    document.getElementById("edSaveNotes").addEventListener("click", async () => {
+      if (!editing) return;
+      editing.profile.notes = document.getElementById("edNotes").value;
+      editing.profile = await saveProfile(editing.uid, editing.profile);
+      toast("Note enregistrée");
+    });
+
+    document.getElementById("saveMetrics").addEventListener("click", async () => {
+      if (!editing) return;
+      const newMetrics = document.getElementById("editMetrics").value;
+      // Demo mode: edit demo_users; Firebase mode: update user doc
+      const { db, auth } = await import("./assets/js/auth.js");
+      if (db) {
+        const { doc, updateDoc } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
+        await updateDoc(doc(db, "users", editing.uid), { metrics: newMetrics });
+      } else {
+        const users = JSON.parse(localStorage.getItem("crous_demo_users") || "{}");
+        if (users[editing.email]) { users[editing.email].metrics = newMetrics; localStorage.setItem("crous_demo_users", JSON.stringify(users)); }
+      }
+      editing.metrics = newMetrics;
+      toast("Métriques à jour"); refreshRoster();
+    });
+
+    // ---------- New client modal
+    const modal = document.getElementById("modalClient");
+    document.getElementById("addClientBtn").addEventListener("click", () => modal.classList.add("in"));
+    document.getElementById("modalClose").addEventListener("click", () => modal.classList.remove("in"));
+    modal.addEventListener("click", (e) => { if (e.target === modal) modal.classList.remove("in"); });
+
+    document.getElementById("newClientForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(e.target).entries());
+      const status = document.getElementById("newClientStatus");
+      status.textContent = "Création…"; status.style.color = "var(--stone)";
+      try {
+        // Note: in Firebase mode this signs us out of admin and into the new client.
+        // For demo mode it just adds a record. Safer flow is documented in README.
+        await signUp(data);
+        // restore admin session on demo mode
+        const users = JSON.parse(localStorage.getItem("crous_demo_users") || "{}");
+        if (users[data.email]) { users[data.email].metrics = data.metrics || ""; localStorage.setItem("crous_demo_users", JSON.stringify(users)); }
+        localStorage.setItem("crous_demo_session", admin.email);
+
+        e.target.reset(); modal.classList.remove("in");
+        status.textContent = ""; toast("Athlète créé");
+        await refreshRoster();
+      } catch (err) {
+        status.textContent = "✗ " + (err.message || "Erreur"); status.style.color = "var(--blood)";
+      }
+    });
+
+    // ---------- Init
+    await refreshRoster();
+    await refreshInquiries();
+
+    // Cursor
+    const cursor = document.getElementById('cursor');
+    document.addEventListener('mousemove', (e) => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top  = e.clientY + 'px';
+    });
+    document.querySelectorAll('a, button, .card').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('lg'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('lg'));
+    });
+  </script>
+</body>
+</html>

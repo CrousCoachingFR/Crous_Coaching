@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crous_Coaching — Espace athlète</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+
+  <div class="cursor-dot" id="cursor"></div>
+
+  <div class="shell">
+
+    <!-- ============ SIDEBAR ============ -->
+    <aside class="shell__side">
+      <a href="index.html" class="brand" style="color: var(--paper);">
+        <span class="brand__mark">C</span>
+        <span>Crous<em style="font-style: italic; color: var(--blood)">_</em>Coaching</span>
+      </a>
+
+      <div class="kicker" style="color: #8E8779; margin-top: 24px;">Espace athlète · privé</div>
+
+      <nav class="side-nav">
+        <a href="#" data-panel="overview" class="is-active"><span class="ix">00</span> Aperçu</a>
+        <a href="#" data-panel="training"><span class="ix">01</span> Entraînement</a>
+        <a href="#" data-panel="diet"><span class="ix">02</span> Nutrition</a>
+        <a href="#" data-panel="protocol"><span class="ix">03</span> Protocole</a>
+        <a href="#" data-panel="notes"><span class="ix">04</span> Notes coach</a>
+      </nav>
+
+      <div class="shell__user">
+        <div class="avatar" id="userInitial">?</div>
+        <div style="flex: 1; min-width: 0;">
+          <div id="userName" style="font-family: var(--ff-display); font-style: italic; font-size: 18px; overflow: hidden; text-overflow: ellipsis;">…</div>
+          <div id="userRole" class="kicker" style="color: #8E8779;">—</div>
+        </div>
+        <button id="logoutBtn" title="Déconnexion" style="cursor: pointer; color: var(--paper); font-family: var(--ff-mono); font-size: 14px;">↪</button>
+      </div>
+    </aside>
+
+    <!-- ============ MAIN ============ -->
+    <main class="shell__main">
+
+      <!-- OVERVIEW -->
+      <section class="panel is-active" data-panel="overview">
+        <div class="panel-head">
+          <h1><span class="num">00</span>Bon retour, <em id="firstName">athlète</em>.</h1>
+          <div class="kicker">Dernière mise à jour · <span id="lastUpdated">—</span></div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
+          <article class="card">
+            <div class="card__num">01 — Cette semaine</div>
+            <h3 class="card__title">Entraînement</h3>
+            <div class="stat-num" style="font-size: 88px;" id="trainCount">0</div>
+            <div class="kicker" style="color: var(--stone);">séances programmées</div>
+            <button class="btn btn--ghost" data-go="training" style="margin-top: 12px;">Voir le plan →</button>
+          </article>
+
+          <article class="card card--ink">
+            <div class="card__num">02 — Cible kcal</div>
+            <h3 class="card__title">Nutrition</h3>
+            <div class="stat-num" style="font-size: 88px;" id="kcalTotal">—</div>
+            <div class="kicker" style="color: #B5AC9D;">kcal / jour (cumul macros)</div>
+            <button class="btn btn--ghost" data-go="diet" style="margin-top: 12px; border-color: var(--paper); color: var(--paper);">Voir la diète →</button>
+          </article>
+
+          <article class="card" style="border: 1px solid var(--blood);">
+            <div class="card__num" style="color: var(--blood);">03 — En cours</div>
+            <h3 class="card__title">Protocole</h3>
+            <div class="stat-num" style="font-size: 88px; color: var(--blood);" id="protoCount">0</div>
+            <div class="kicker" style="color: var(--stone);">molécules actives</div>
+            <button class="btn btn--blood" data-go="protocol" style="margin-top: 12px;">Voir le protocole →</button>
+          </article>
+        </div>
+
+        <div style="margin-top: 60px;">
+          <div class="section-tag">
+            <div class="section-tag__num">⌗</div>
+            <div class="section-tag__txt">Dernière note du coach</div>
+          </div>
+          <div id="latestNote" style="font-family: var(--ff-display); font-style: italic; font-size: 28px; line-height: 1.35; max-width: 60ch;">
+            Aucune note pour l'instant.
+          </div>
+        </div>
+      </section>
+
+      <!-- TRAINING -->
+      <section class="panel" data-panel="training">
+        <div class="panel-head">
+          <h1><span class="num">01</span>Entraînement.</h1>
+          <div class="kicker">Programmation hebdomadaire</div>
+        </div>
+
+        <div class="entry-list" id="trainList"></div>
+
+        <form class="entry-form" id="trainForm">
+          <div class="field"><label>Jour</label><input type="text" name="day" placeholder="Lun" required maxlength="3" /></div>
+          <div class="field"><label>Exercice</label><input type="text" name="name" placeholder="Squat barre" required /></div>
+          <div class="field"><label>Travail / Charge</label><input type="text" name="work" placeholder="5×5 · 120 kg · RPE 8" required /></div>
+          <button class="btn" type="submit">+ Ajouter</button>
+        </form>
+      </section>
+
+      <!-- DIET -->
+      <section class="panel" data-panel="diet">
+        <div class="panel-head">
+          <h1><span class="num">02</span>Nutrition.</h1>
+          <div class="kicker">Plan alimentaire courant</div>
+        </div>
+
+        <div class="entry-list" id="dietList"></div>
+
+        <form class="entry-form" id="dietForm">
+          <div class="field"><label>Repas</label>
+            <select name="day" required>
+              <option value="P-DEJ">Petit-déj.</option>
+              <option value="DEJ">Déjeuner</option>
+              <option value="GOÛ">Goûter</option>
+              <option value="DÎN">Dîner</option>
+              <option value="INTRA">Intra-training</option>
+              <option value="POST">Post-training</option>
+            </select>
+          </div>
+          <div class="field"><label>Description</label><input type="text" name="name" placeholder="200 g poulet + 150 g riz basmati" required /></div>
+          <div class="field"><label>Macros / kcal</label><input type="text" name="work" placeholder="45P / 110C / 8L · 720 kcal" required /></div>
+          <button class="btn" type="submit">+ Ajouter</button>
+        </form>
+      </section>
+
+      <!-- PROTOCOL -->
+      <section class="panel" data-panel="protocol">
+        <div class="panel-head">
+          <h1><span class="num">03</span>Protocole.</h1>
+          <div class="kicker" style="color: var(--blood);">⚠ Section confidentielle</div>
+        </div>
+
+        <p style="font-family: var(--ff-display); font-style: italic; font-size: 20px; max-width: 60ch; margin-bottom: 32px; color: var(--stone);">
+          Si vous suivez un cycle, consignez ici molécules, dosages et durée.
+          Visible uniquement par vous et votre coach. Bilans sanguins à joindre par email.
+        </p>
+
+        <div class="entry-list" id="protoList"></div>
+
+        <form class="entry-form" id="protoForm">
+          <div class="field"><label>Molécule</label><input type="text" name="day" placeholder="Test E" required /></div>
+          <div class="field"><label>Dosage / Fréquence</label><input type="text" name="name" placeholder="250 mg / E5D" required /></div>
+          <div class="field"><label>Durée &amp; notes</label><input type="text" name="work" placeholder="12 sem · sem. 1 → 12" required /></div>
+          <button class="btn" type="submit">+ Ajouter</button>
+        </form>
+      </section>
+
+      <!-- NOTES -->
+      <section class="panel" data-panel="notes">
+        <div class="panel-head">
+          <h1><span class="num">04</span>Notes coach.</h1>
+          <div class="kicker">Messagerie asynchrone</div>
+        </div>
+
+        <textarea id="notesArea" style="width: 100%; min-height: 360px; font-family: var(--ff-display); font-style: italic; font-size: 22px; line-height: 1.5; padding: 24px; border: 1px solid var(--ink); background: var(--paper-2);"
+          placeholder="Notes laissées par votre coach apparaîtront ici…"></textarea>
+        <div style="margin-top: 20px; display: flex; gap: 12px; align-items: center;">
+          <button class="btn" id="saveNotes">Enregistrer</button>
+          <span class="kicker" style="color: var(--stone);">Sauvegarde manuelle — pensez à valider</span>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <div id="toast" class="toast">Enregistré</div>
+
+  <script type="module">
+    import { requireAuth, signOutUser } from "./assets/js/auth.js";
+    import { loadProfile, saveProfile, newEntry } from "./assets/js/profile.js";
+
+    const user = await requireAuth("client");
+    if (!user) throw new Error("redirect");
+
+    // -------- Header / user
+    document.getElementById("firstName").textContent = (user.displayName || "athlète").split(" ")[0];
+    document.getElementById("userName").textContent = user.displayName || user.email;
+    document.getElementById("userRole").textContent = "Athlète · " + (user.metrics || "");
+    document.getElementById("userInitial").textContent = (user.displayName || user.email).trim().charAt(0).toUpperCase();
+
+    // -------- Logout
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+      await signOutUser();
+      window.location.href = "login.html";
+    });
+
+    // -------- Sidebar nav
+    const links = document.querySelectorAll(".side-nav a");
+    const panels = document.querySelectorAll(".panel");
+    function showPanel(name) {
+      links.forEach(a => a.classList.toggle("is-active", a.dataset.panel === name));
+      panels.forEach(p => p.classList.toggle("is-active", p.dataset.panel === name));
+    }
+    links.forEach(a => a.addEventListener("click", (e) => { e.preventDefault(); showPanel(a.dataset.panel); }));
+    document.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => showPanel(b.dataset.go)));
+
+    // -------- Data
+    let profile = await loadProfile(user.uid);
+    document.getElementById("lastUpdated").textContent = profile.updatedAt
+      ? new Date(profile.updatedAt).toLocaleString("fr-FR")
+      : "jamais";
+
+    function render() {
+      // counts
+      document.getElementById("trainCount").textContent = profile.training.length;
+      document.getElementById("protoCount").textContent = profile.protocol.length;
+      const kcal = profile.diet.reduce((acc, e) => {
+        const m = (e.work || "").match(/(\d+)\s*kcal/i);
+        return acc + (m ? parseInt(m[1], 10) : 0);
+      }, 0);
+      document.getElementById("kcalTotal").textContent = kcal || "—";
+      document.getElementById("latestNote").textContent =
+        profile.notes && profile.notes.trim() ? profile.notes : "Aucune note pour l'instant.";
+
+      // lists
+      renderList("trainList", profile.training);
+      renderList("dietList",  profile.diet);
+      renderList("protoList", profile.protocol);
+
+      document.getElementById("notesArea").value = profile.notes || "";
+    }
+
+    function renderList(containerId, items) {
+      const c = document.getElementById(containerId);
+      c.innerHTML = "";
+      if (items.length === 0) {
+        c.innerHTML = `<div style="padding: 32px 0; font-family: var(--ff-display); font-style: italic; font-size: 22px; color: var(--stone); border-bottom: 1px solid var(--ink);">Aucune entrée — utilisez le formulaire ci-dessous.</div>`;
+        return;
+      }
+      items.forEach((e, i) => {
+        const row = document.createElement("div");
+        row.className = "entry";
+        row.innerHTML = `
+          <div class="entry__day">${e.day || (i+1)}</div>
+          <div class="entry__name">${escapeHtml(e.name || "")}</div>
+          <div class="entry__meta">${escapeHtml(e.work || "")}</div>
+          <div class="entry__del" data-id="${e.id}">Supprimer</div>
+        `;
+        c.appendChild(row);
+      });
+      c.querySelectorAll(".entry__del").forEach(btn => {
+        btn.addEventListener("click", async () => {
+          const id = btn.dataset.id;
+          const which = containerId === "trainList" ? "training" : containerId === "dietList" ? "diet" : "protocol";
+          profile[which] = profile[which].filter(x => x.id !== id);
+          profile = await saveProfile(user.uid, profile);
+          render(); toast("Entrée supprimée");
+        });
+      });
+    }
+
+    function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c])); }
+
+    // -------- Forms
+    function wireForm(formId, section) {
+      document.getElementById(formId).addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const data = Object.fromEntries(new FormData(e.target).entries());
+        profile[section].push(newEntry(section, data));
+        profile = await saveProfile(user.uid, profile);
+        e.target.reset();
+        render(); toast("Entrée ajoutée");
+      });
+    }
+    wireForm("trainForm", "training");
+    wireForm("dietForm", "diet");
+    wireForm("protoForm", "protocol");
+
+    document.getElementById("saveNotes").addEventListener("click", async () => {
+      profile.notes = document.getElementById("notesArea").value;
+      profile = await saveProfile(user.uid, profile);
+      toast("Notes enregistrées");
+    });
+
+    // -------- Toast
+    function toast(msg) {
+      const el = document.getElementById("toast");
+      el.textContent = msg;
+      el.classList.add("in");
+      clearTimeout(toast._t);
+      toast._t = setTimeout(() => el.classList.remove("in"), 2200);
+    }
+
+    render();
+
+    // Cursor
+    const cursor = document.getElementById('cursor');
+    document.addEventListener('mousemove', (e) => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top  = e.clientY + 'px';
+    });
+    document.querySelectorAll('a, button, .card').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('lg'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('lg'));
+    });
+  </script>
+</body>
+</html>

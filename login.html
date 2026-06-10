@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crous_Coaching — Espace athlète</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body class="dark">
+
+  <div class="cursor-dot" id="cursor"></div>
+
+  <main style="min-height: 100vh; display: grid; grid-template-columns: 1.1fr 1fr;">
+
+    <!-- LEFT — editorial pane -->
+    <section style="padding: 48px var(--gutter); display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid var(--paper); position: relative; overflow: hidden;">
+      <a href="index.html" class="brand" style="color: var(--paper);">
+        <span class="brand__mark">C</span>
+        <span>Crous<em style="font-style: italic; color: var(--blood)">_</em>Coaching</span>
+      </a>
+
+      <div>
+        <div class="kicker" style="color: #8E8779;">— Espace athlète · accès réservé</div>
+        <h1 class="display" style="font-size: clamp(56px, 9vw, 130px); margin-top: 20px;">
+          Ouvrir<br/>la <em>session.</em>
+        </h1>
+        <p style="font-family: var(--ff-display); font-style: italic; font-size: 22px; max-width: 36ch; margin-top: 28px; color: #B5AC9D;">
+          Vos plans d'entraînement, votre nutrition et — si applicable — votre protocole.
+          Tout au même endroit. Strictement privé.
+        </p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px; border-top: 1px solid var(--paper); padding-top: 32px;">
+        <div>
+          <div class="stat-num" style="font-size: 64px; color: var(--blood);">47</div>
+          <div class="kicker" style="color: #8E8779;">Athlètes actifs</div>
+        </div>
+        <div>
+          <div class="stat-num" style="font-size: 64px;">SSL</div>
+          <div class="kicker" style="color: #8E8779;">Chiffré bout-en-bout</div>
+        </div>
+      </div>
+
+      <!-- Decorative crosshair -->
+      <svg style="position: absolute; bottom: -120px; right: -120px; opacity: .08; pointer-events: none;" width="500" height="500" viewBox="0 0 500 500">
+        <circle cx="250" cy="250" r="240" fill="none" stroke="white" stroke-width="1"/>
+        <circle cx="250" cy="250" r="180" fill="none" stroke="white" stroke-width="1"/>
+        <circle cx="250" cy="250" r="120" fill="none" stroke="white" stroke-width="1"/>
+        <circle cx="250" cy="250" r="60"  fill="none" stroke="white" stroke-width="1"/>
+        <line x1="0" y1="250" x2="500" y2="250" stroke="white" stroke-width="1"/>
+        <line x1="250" y1="0" x2="250" y2="500" stroke="white" stroke-width="1"/>
+      </svg>
+    </section>
+
+    <!-- RIGHT — auth pane -->
+    <section style="padding: 48px var(--gutter); display: flex; flex-direction: column; justify-content: center; background: var(--paper); color: var(--ink);">
+
+      <div style="max-width: 480px; margin: 0 auto; width: 100%;">
+
+        <!-- Tabs -->
+        <div style="display: flex; gap: 0; border-bottom: 1px solid var(--ink); margin-bottom: 40px;">
+          <button id="tabLogin" class="tab is-active" style="flex: 1; padding: 16px; font-family: var(--ff-mono); font-size: 12px; letter-spacing: .18em; text-transform: uppercase; cursor: pointer; border-bottom: 4px solid var(--blood); margin-bottom: -1px;">Connexion</button>
+          <button id="tabSignup" class="tab" style="flex: 1; padding: 16px; font-family: var(--ff-mono); font-size: 12px; letter-spacing: .18em; text-transform: uppercase; cursor: pointer; border-bottom: 4px solid transparent; margin-bottom: -1px; color: var(--stone);">Créer un compte</button>
+        </div>
+
+        <!-- LOGIN FORM -->
+        <form id="loginForm" autocomplete="off">
+          <h2 class="display" style="font-size: 56px; margin-bottom: 12px;">Bon retour.</h2>
+          <p style="color: var(--stone); font-family: var(--ff-display); font-style: italic; font-size: 18px; margin-bottom: 24px;">
+            Reprenez où vous vous étiez arrêté.
+          </p>
+
+          <div class="field">
+            <label>Email</label>
+            <input type="email" name="email" placeholder="vous@exemple.com" required />
+          </div>
+          <div class="field">
+            <label>Mot de passe</label>
+            <input type="password" name="password" placeholder="••••••••" required />
+          </div>
+
+          <button type="submit" class="btn" style="margin-top: 24px; width: 100%; justify-content: center;">Entrer dans l'espace</button>
+
+          <p id="loginStatus" class="kicker" style="margin-top: 16px; color: var(--blood); min-height: 16px;"></p>
+
+          <div style="margin-top: 32px; padding: 16px; border: 1px dashed var(--stone); font-family: var(--ff-mono); font-size: 11px; line-height: 1.6; color: var(--stone);">
+            <strong style="color: var(--ink);">Mode démo (sans Firebase) :</strong><br/>
+            • Admin : <code>admin@crous.fr</code> / <code>admin123</code><br/>
+            • Client : <code>theo@example.com</code> / <code>athlete123</code>
+          </div>
+        </form>
+
+        <!-- SIGNUP FORM -->
+        <form id="signupForm" autocomplete="off" style="display: none;">
+          <h2 class="display" style="font-size: 56px; margin-bottom: 12px;">Première session.</h2>
+          <p style="color: var(--stone); font-family: var(--ff-display); font-style: italic; font-size: 18px; margin-bottom: 24px;">
+            Vous avez reçu un email d'invitation après votre entretien.
+          </p>
+
+          <div class="field"><label>Nom complet</label><input type="text" name="displayName" required /></div>
+          <div class="field"><label>Email</label><input type="email" name="email" required /></div>
+          <div class="field"><label>Mot de passe (8 caractères min)</label><input type="password" name="password" minlength="8" required /></div>
+
+          <button type="submit" class="btn" style="margin-top: 24px; width: 100%; justify-content: center;">Créer mon espace</button>
+          <p id="signupStatus" class="kicker" style="margin-top: 16px; color: var(--blood); min-height: 16px;"></p>
+        </form>
+
+        <p style="margin-top: 40px; font-family: var(--ff-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--stone);">
+          ← <a href="index.html" style="border-bottom: 1px solid currentColor;">Retour à la doctrine</a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <script type="module">
+    import { signIn, signUp, routeAfterLogin, getCurrentUserWithRole } from "./assets/js/auth.js";
+
+    // Auto-redirect if already logged in
+    getCurrentUserWithRole().then(u => { if (u) routeAfterLogin(u); });
+
+    const tabLogin = document.getElementById("tabLogin");
+    const tabSignup = document.getElementById("tabSignup");
+    const loginForm = document.getElementById("loginForm");
+    const signupForm = document.getElementById("signupForm");
+
+    function switchTab(which) {
+      const isLogin = which === "login";
+      tabLogin.style.borderColor = isLogin ? "var(--blood)" : "transparent";
+      tabLogin.style.color = isLogin ? "var(--ink)" : "var(--stone)";
+      tabSignup.style.borderColor = !isLogin ? "var(--blood)" : "transparent";
+      tabSignup.style.color = !isLogin ? "var(--ink)" : "var(--stone)";
+      loginForm.style.display = isLogin ? "" : "none";
+      signupForm.style.display = !isLogin ? "" : "none";
+    }
+    tabLogin.addEventListener("click", () => switchTab("login"));
+    tabSignup.addEventListener("click", () => switchTab("signup"));
+
+    loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(loginForm).entries());
+      const status = document.getElementById("loginStatus");
+      status.textContent = "Authentification…"; status.style.color = "var(--stone)";
+      try {
+        const u = await signIn(data);
+        const userObj = u.role ? u : await getCurrentUserWithRole();
+        routeAfterLogin(userObj);
+      } catch (err) {
+        status.textContent = "✗ " + (err.message || "Erreur de connexion");
+        status.style.color = "var(--blood)";
+      }
+    });
+
+    signupForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(signupForm).entries());
+      const status = document.getElementById("signupStatus");
+      status.textContent = "Création du compte…"; status.style.color = "var(--stone)";
+      try {
+        const u = await signUp(data);
+        const userObj = u.role ? u : await getCurrentUserWithRole();
+        routeAfterLogin(userObj);
+      } catch (err) {
+        status.textContent = "✗ " + (err.message || "Erreur");
+        status.style.color = "var(--blood)";
+      }
+    });
+
+    // Field focus
+    document.querySelectorAll(".field").forEach(f => {
+      const input = f.querySelector("input");
+      input?.addEventListener("focus", () => f.classList.add("field--active"));
+      input?.addEventListener("blur",  () => f.classList.remove("field--active"));
+    });
+
+    // Cursor
+    const cursor = document.getElementById('cursor');
+    document.addEventListener('mousemove', (e) => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top  = e.clientY + 'px';
+    });
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('lg'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('lg'));
+    });
+  </script>
+
+  <style>
+    @media (max-width: 880px) {
+      main { grid-template-columns: 1fr !important; }
+      main > section:first-child { display: none !important; }
+    }
+  </style>
+</body>
+</html>
