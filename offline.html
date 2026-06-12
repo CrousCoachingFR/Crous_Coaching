@@ -23,5 +23,12 @@
     Pas de connexion détectée. Vos données locales restent accessibles une fois reconnecté.
   </p>
   <a href="dashboard.html" class="btn" style="margin-top:8px;">Réessayer →</a>
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./service-worker.js").catch(console.warn);
+      });
+    }
+  </script>
 </body>
 </html>
