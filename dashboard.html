@@ -307,5 +307,12 @@
       el.addEventListener('mouseleave', () => cursor.classList.remove('lg'));
     });
   </script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./service-worker.js").catch(console.warn);
+      });
+    }
+  </script>
 </body>
 </html>
