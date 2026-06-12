@@ -89,12 +89,6 @@
           <button type="submit" class="btn" style="margin-top: 24px; width: 100%; justify-content: center;">Entrer dans l'espace</button>
 
           <p id="loginStatus" class="kicker" style="margin-top: 16px; color: var(--blood); min-height: 16px;"></p>
-
-          <div style="margin-top: 32px; padding: 16px; border: 1px dashed var(--stone); font-family: var(--ff-mono); font-size: 11px; line-height: 1.6; color: var(--stone);">
-            <strong style="color: var(--ink);">Mode démo (sans Firebase) :</strong><br/>
-            • Admin : <code>admin@crous.fr</code> / <code>admin123</code><br/>
-            • Client : <code>theo@example.com</code> / <code>athlete123</code>
-          </div>
         </form>
 
         <!-- SIGNUP FORM -->
@@ -122,7 +116,6 @@
   <script type="module">
     import { signIn, signUp, routeAfterLogin, getCurrentUserWithRole, getInvite, isInviteValid } from "./auth.js";
 
-    // Auto-redirect if already logged in
     getCurrentUserWithRole().then(u => { if (u) routeAfterLogin(u); });
 
     const tabLogin = document.getElementById("tabLogin");
@@ -142,10 +135,9 @@
     tabLogin.addEventListener("click", () => switchTab("login"));
     tabSignup.addEventListener("click", () => switchTab("signup"));
 
-    // -------- Invitation (lien à usage unique, 48h)
     let activeInvite = null;
     const tabsRow = tabSignup.parentElement;
-    tabsRow.style.display = "none"; // pas d'onglet "Créer un compte" par défaut
+    tabsRow.style.display = "none"; 
 
     const params = new URLSearchParams(window.location.search);
     const inviteToken = params.get("invite");
@@ -154,7 +146,7 @@
       const invite = await getInvite(inviteToken);
       if (isInviteValid(invite)) {
         activeInvite = invite;
-        // Bascule directe sur le formulaire de création, pré-rempli
+        
         loginForm.style.display = "none";
         signupForm.style.display = "";
         const emailInput = signupForm.querySelector('input[name="email"]');
