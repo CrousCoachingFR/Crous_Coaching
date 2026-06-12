@@ -6,18 +6,18 @@
 const CACHE_NAME = "ccoaching-v1";
 
 const STATIC_ASSETS = [
-  "/",
-  "/index.html",
-  "/coaching.html",
-  "/login.html",
-  "/dashboard.html",
-  "/admin.html",
-  "/assets/css/style.css",
-  "/assets/js/firebase-config.js",
-  "/assets/js/auth.js",
-  "/assets/js/profile.js",
-  "/manifest.json",
-  "/offline.html"
+  "./",
+  "./index.html",
+  "./coaching.html",
+  "./login.html",
+  "./dashboard.html",
+  "./admin.html",
+  "./style.css",
+  "./assets/js/firebase-config.js",
+  "./assets/js/auth.js",
+  "./assets/js/profile.js",
+  "./manifest.json",
+  "./offline.html"
 ];
 
 // Installation — mise en cache des assets statiques
@@ -58,7 +58,7 @@ self.addEventListener("fetch", (event) => {
       .catch(() => {
         // Réseau indisponible → cache, sinon page offline
         return caches.match(event.request).then(
-          (cached) => cached || caches.match("/offline.html")
+          (cached) => cached || caches.match("./offline.html")
         );
       })
   );
