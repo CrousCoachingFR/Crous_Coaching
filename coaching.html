@@ -30,8 +30,22 @@
         <a href="login.html">Espace athlète</a>
       </nav>
       <a href="#postuler" class="nav-cta">Postuler</a>
+      <button class="burger" id="burgerBtn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </header>
+
+  <div class="nav-drawer" id="navDrawer">
+    <nav>
+      <a href="index.html">Doctrine</a>
+      <a href="coaching.html">Coaching</a>
+      <a href="index.html#manifeste">Manifeste</a>
+      <a href="login.html">Espace athlète</a>
+    </nav>
+    <a href="#postuler" class="btn drawer-cta" style="margin-top: 40px; align-self: flex-start; border-color: var(--paper); color: var(--paper);">Postuler →</a>
+    <div class="drawer-footer">© 2026 Crous_Coaching</div>
+  </div>
 
   <section style="border-bottom: 1px solid var(--ink); padding: 80px 0 40px;">
     <div class="wrap">
@@ -55,7 +69,6 @@
       <div class="grid-3">
 
         <div class="grid-spacer"></div>
-        <!-- OFFRE 1 -->
         <article class="card">
           <div class="card__num">N°01 — Essentiel</div>
           <h3 class="card__title">Foundation</h3>
@@ -296,6 +309,23 @@
     document.querySelectorAll('a, button, .card').forEach(el => {
       el.addEventListener('mouseenter', () => cursor.classList.add('lg'));
       el.addEventListener('mouseleave', () => cursor.classList.remove('lg'));
+    });
+  </script>
+
+  <script>
+    const burgerBtn = document.getElementById('burgerBtn');
+    const navDrawer = document.getElementById('navDrawer');
+    burgerBtn.addEventListener('click', () => {
+      burgerBtn.classList.toggle('open');
+      navDrawer.classList.toggle('open');
+      document.body.style.overflow = navDrawer.classList.contains('open') ? 'hidden' : '';
+    });
+    navDrawer.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        burgerBtn.classList.remove('open');
+        navDrawer.classList.remove('open');
+        document.body.style.overflow = '';
+      });
     });
   </script>
 
