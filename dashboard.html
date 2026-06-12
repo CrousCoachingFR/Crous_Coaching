@@ -179,8 +179,8 @@
   <div id="toast" class="toast">Enregistré</div>
 
   <script type="module">
-    import { requireAuth, signOutUser } from "./assets/js/auth.js";
-    import { loadProfile, saveProfile, newEntry } from "./assets/js/profile.js";
+    import { requireAuth, signOutUser } from "./auth.js";
+    import { loadProfile, saveProfile, newEntry } from "./profile.js";
 
     const user = await requireAuth("client");
     if (!user) throw new Error("redirect");
