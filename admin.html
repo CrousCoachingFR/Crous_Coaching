@@ -19,7 +19,6 @@
 
   <div class="shell">
 
-    <!-- ============ SIDEBAR ============ -->
     <aside class="shell__side">
       <a href="index.html" class="brand" style="color: var(--paper);">
         <span class="brand__mark">C</span>
@@ -44,10 +43,8 @@
       </div>
     </aside>
 
-    <!-- ============ MAIN ============ -->
     <main class="shell__main">
 
-      <!-- ATHLETES LIST -->
       <section class="panel is-active" data-panel="athletes">
         <div class="panel-head">
           <h1><span class="num">01</span><em>Athlètes</em> suivis.</h1>
@@ -81,7 +78,6 @@
         <div id="clientList" style="border-top: 1px solid var(--ink);"></div>
       </section>
 
-      <!-- INQUIRIES -->
       <section class="panel" data-panel="inquiries">
         <div class="panel-head">
           <h1><span class="num">02</span><em>Candidatures</em> reçues.</h1>
@@ -90,7 +86,6 @@
         <div id="inquiriesList"></div>
       </section>
 
-      <!-- EDITOR (athlete profile) -->
       <section class="panel" data-panel="editor">
         <div class="panel-head">
           <h1><span class="num">⌗</span><em id="editName">—</em></h1>
@@ -118,7 +113,6 @@
           </div>
         </div>
 
-        <!-- Tabs to switch section -->
         <div class="ed-tabs">
           <button class="ed-tab is-active" data-ed="training">01 — Entraînement</button>
           <button class="ed-tab" data-ed="diet">02 — Nutrition</button>
@@ -168,7 +162,6 @@
     </main>
   </div>
 
-  <!-- Modal: invite athlete -->
   <div id="modalClient" class="modal">
     <div class="modal__card">
       <span class="modal__close" id="modalClose">×</span>
@@ -199,7 +192,7 @@
 
   <script type="module">
     import { requireAuth, signOutUser, createInvite } from "./auth.js";
-    import { loadProfile, saveProfile, newEntry, listAthletes, listInquiries } from "./profile.js";
+    import { loadProfile, saveProfile, newEntry, listAthletes, listInquiries, deleteInquiry, updateInquiryStatus } from "./profile.js";
 
     const admin = await requireAuth("admin");
     if (!admin) throw new Error("redirect");
@@ -208,7 +201,6 @@
     document.getElementById("userInitial").textContent = (admin.displayName || admin.email).trim().charAt(0).toUpperCase();
     document.getElementById("logoutBtn").addEventListener("click", async () => { await signOutUser(); window.location.href = "login.html"; });
 
-    // ---------- Sidebar
     const links = document.querySelectorAll(".side-nav a");
     const panels = document.querySelectorAll(".panel");
     function showPanel(name) {
@@ -218,7 +210,6 @@
     links.forEach(a => a.addEventListener("click", (e) => { e.preventDefault(); showPanel(a.dataset.panel); }));
     document.getElementById("backToList").addEventListener("click", () => showPanel("athletes"));
 
-    // ---------- Toast
     function toast(msg) {
       const el = document.getElementById("toast");
       el.textContent = msg; el.classList.add("in");
@@ -226,7 +217,6 @@
     }
     function escapeHtml(s) { return String(s||"").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c])); }
 
-    // ---------- Roster
     async function refreshRoster() {
       const athletes = await listAthletes();
       const inquiries = await listInquiries();
@@ -265,7 +255,6 @@
       });
     }
 
-    // ---------- Inquiries
     async function refreshInquiries() {
       const inquiries = await listInquiries();
       const list = document.getElementById("inquiriesList");
@@ -273,28 +262,83 @@
         list.innerHTML = `<div style="padding: 40px 0; font-family: var(--ff-display); font-style: italic; font-size: 22px; color: var(--stone);">Aucune candidature reçue pour l'instant.</div>`;
         return;
       }
-      list.innerHTML = inquiries.map((i, k) => `
-        <article style="border: 1px solid var(--ink); padding: 28px; margin-bottom: 16px;">
-          <header style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 16px;">
-            <div>
+
+      list.innerHTML = "";
+
+      inquiries.forEach((inq, k) => {
+        const status = inq.status || "pending";
+        const id     = inq.id !== undefined ? inq.id : String(k);
+
+        const statusColors = {
+          pending:  { bg: "var(--paper)",  border: "var(--ink)",   label: "En attente", labelBg: "transparent", labelColor: "var(--stone)" },
+          accepted: { bg: "#F0FAF0",       border: "#2E7D32",      label: "Accepté",    labelBg: "#2E7D32",      labelColor: "#fff" },
+          refused:  { bg: "#FDF0F0",       border: "var(--blood)", label: "Refusé",     labelBg: "var(--blood)", labelColor: "#fff" },
+        };
+        const s = statusColors[status] || statusColors.pending;
+
+        const article = document.createElement("article");
+        article.dataset.id = id;
+        article.style.cssText = `border: 1px solid ${s.border}; padding: 28px; margin-bottom: 16px; background: ${s.bg}; transition: opacity .3s;`;
+        article.innerHTML = `
+          <header style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; gap: 12px; flex-wrap: wrap;">
+            <div style="display:flex; align-items: baseline; gap: 12px; flex-wrap: wrap;">
               <span class="stat-num" style="font-size: 28px; color: var(--blood);">#${String(k+1).padStart(2,'0')}</span>
-              <span style="font-family: var(--ff-display); font-style: italic; font-size: 28px; margin-left: 12px;">${escapeHtml(i.fullName||"—")}</span>
+              <span style="font-family: var(--ff-display); font-style: italic; font-size: 28px;">${escapeHtml(inq.fullName||"—")}</span>
             </div>
-            <span class="tag tag--blood">${escapeHtml(i.program||"—")}</span>
+            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+              <span class="tag" style="background: ${s.labelBg}; color: ${s.labelColor}; border-color: ${s.border};">${s.label}</span>
+              <span class="tag tag--blood">${escapeHtml(inq.program||"—")}</span>
+            </div>
           </header>
-          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; font-family: var(--ff-mono); font-size: 12px; color: var(--stone); margin-bottom: 16px;">
-            <div><strong style="color: var(--ink);">Email</strong><br/>${escapeHtml(i.email||"—")}</div>
-            <div><strong style="color: var(--ink);">Métriques</strong><br/>${escapeHtml(i.metrics||"—")}</div>
-            <div><strong style="color: var(--ink);">Expérience</strong><br/>${escapeHtml(i.experience||"—")}</div>
+
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; font-family: var(--ff-mono); font-size: 12px; color: var(--stone); margin-bottom: 16px;">
+            <div><strong style="color: var(--ink);">Email</strong><br/>${escapeHtml(inq.email||"—")}</div>
+            <div><strong style="color: var(--ink);">Métriques</strong><br/>${escapeHtml(inq.metrics||"—")}</div>
+            <div><strong style="color: var(--ink);">Expérience</strong><br/>${escapeHtml(inq.experience||"—")}</div>
           </div>
-          <p style="font-family: var(--ff-display); font-style: italic; font-size: 18px; line-height: 1.5;">${escapeHtml(i.goals||"")}</p>
-          ${i.notes ? `<p style="font-family: var(--ff-body); font-size: 14px; color: var(--stone); margin-top: 12px;">${escapeHtml(i.notes)}</p>`:''}
-        </article>
-      `).join("");
+
+          <p style="font-family: var(--ff-display); font-style: italic; font-size: 18px; line-height: 1.5; margin-bottom: 12px;">${escapeHtml(inq.goals||"")}</p>
+          ${inq.notes ? `<p style="font-family: var(--ff-body); font-size: 14px; color: var(--stone); margin-bottom: 16px;">${escapeHtml(inq.notes)}</p>` : ""}
+
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; padding-top: 16px; border-top: 1px solid ${s.border};">
+            ${status !== "accepted" ? `<button class="btn" data-action="accept" style="padding: 10px 18px; font-size: 11px; --bg: #2E7D32; border-color: #2E7D32;">✓ Accepter</button>` : ""}
+            ${status !== "refused"  ? `<button class="btn btn--ghost" data-action="refuse" style="padding: 10px 18px; font-size: 11px; border-color: var(--blood); color: var(--blood);">✗ Refuser</button>` : ""}
+            <button class="btn btn--ghost" data-action="delete" style="padding: 10px 18px; font-size: 11px; margin-left: auto;">🗑 Supprimer</button>
+          </div>
+        `;
+
+        article.querySelectorAll("[data-action]").forEach(btn => {
+          btn.addEventListener("click", async () => {
+            const action = btn.dataset.action;
+            btn.disabled = true;
+            btn.textContent = "…";
+            try {
+              if (action === "delete") {
+                article.style.opacity = ".4";
+                await deleteInquiry(id);
+                article.remove();
+                await refreshRoster();
+                toast("Candidature supprimée");
+              } else {
+                const newStatus = action === "accept" ? "accepted" : "refused";
+                await updateInquiryStatus(id, newStatus);
+                toast(action === "accept" ? "Candidature acceptée" : "Candidature refusée");
+                await refreshInquiries();
+                await refreshRoster();
+              }
+            } catch(e) {
+              btn.disabled = false;
+              btn.textContent = "Erreur";
+              console.error(e);
+            }
+          });
+        });
+
+        list.appendChild(article);
+      });
     }
 
-    // ---------- Editor
-    let editing = null; // { uid, name, email, metrics, profile }
+    let editing = null; 
     async function openEditor(meta) {
       const profile = await loadProfile(meta.uid);
       editing = { uid: meta.uid, name: meta.name, email: meta.email, metrics: meta.metrics, profile };
@@ -341,7 +385,6 @@
       });
     }
 
-    // Editor sub-tabs
     document.querySelectorAll(".ed-tab").forEach(t => t.addEventListener("click", () => {
       const which = t.dataset.ed;
       document.querySelectorAll(".ed-tab").forEach(x => {
@@ -374,7 +417,6 @@
     document.getElementById("saveMetrics").addEventListener("click", async () => {
       if (!editing) return;
       const newMetrics = document.getElementById("editMetrics").value;
-      // Demo mode: edit demo_users; Firebase mode: update user doc
       const { db, auth } = await import("./assets/js/auth.js");
       if (db) {
         const { doc, updateDoc } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
@@ -387,7 +429,6 @@
       toast("Métriques à jour"); refreshRoster();
     });
 
-    // ---------- New client modal
     const modal = document.getElementById("modalClient");
     document.getElementById("addClientBtn").addEventListener("click", () => {
       document.getElementById("newClientForm").reset();
@@ -424,11 +465,9 @@
       toast("Lien copié — collez-le dans WhatsApp");
     });
 
-    // ---------- Init
     await refreshRoster();
     await refreshInquiries();
 
-    // Cursor
     const cursor = document.getElementById('cursor');
     document.addEventListener('mousemove', (e) => {
       cursor.style.left = e.clientX + 'px';
