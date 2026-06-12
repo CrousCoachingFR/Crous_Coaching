@@ -68,3 +68,29 @@ export async function listInquiries() {
   }
   return JSON.parse(localStorage.getItem("crous_inquiries") || "[]");
 }
+
+export async function deleteInquiry(id) {
+  if (db) {
+    const { deleteDoc, doc } = await import(
+      "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+    );
+    await deleteDoc(doc(db, "inquiries", id));
+  } else {
+    const list = JSON.parse(localStorage.getItem("crous_inquiries") || "[]");
+    localStorage.setItem("crous_inquiries", JSON.stringify(list.filter((_, k) => String(k) !== String(id))));
+  }
+}
+
+export async function updateInquiryStatus(id, status) {
+  if (db) {
+    const { setDoc, doc } = await import(
+      "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+    );
+    await setDoc(doc(db, "inquiries", id), { status }, { merge: true });
+  } else {
+    const list = JSON.parse(localStorage.getItem("crous_inquiries") || "[]");
+    localStorage.setItem("crous_inquiries", JSON.stringify(
+      list.map((i, k) => (String(k) === String(id) ? { ...i, status } : i))
+    ));
+  }
+}
