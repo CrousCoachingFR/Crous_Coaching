@@ -120,7 +120,7 @@
   </main>
 
   <script type="module">
-    import { signIn, signUp, routeAfterLogin, getCurrentUserWithRole } from "./assets/js/auth.js";
+    import { signIn, signUp, routeAfterLogin, getCurrentUserWithRole, getInvite, isInviteValid } from "./assets/js/auth.js";
 
     // Auto-redirect if already logged in
     getCurrentUserWithRole().then(u => { if (u) routeAfterLogin(u); });
@@ -141,6 +141,42 @@
     }
     tabLogin.addEventListener("click", () => switchTab("login"));
     tabSignup.addEventListener("click", () => switchTab("signup"));
+
+    // -------- Invitation (lien à usage unique, 48h)
+    let activeInvite = null;
+    const tabsRow = tabSignup.parentElement;
+    tabsRow.style.display = "none"; // pas d'onglet "Créer un compte" par défaut
+
+    const params = new URLSearchParams(window.location.search);
+    const inviteToken = params.get("invite");
+
+    if (inviteToken) {
+      const invite = await getInvite(inviteToken);
+      if (isInviteValid(invite)) {
+        activeInvite = invite;
+        // Bascule directe sur le formulaire de création, pré-rempli
+        loginForm.style.display = "none";
+        signupForm.style.display = "";
+        const emailInput = signupForm.querySelector('input[name="email"]');
+        const nameInput  = signupForm.querySelector('input[name="displayName"]');
+        emailInput.value = invite.email || "";
+        emailInput.readOnly = true;
+        emailInput.style.opacity = ".6";
+        nameInput.value = invite.displayName || "";
+
+        const note = document.createElement("p");
+        note.className = "kicker";
+        note.style.color = "var(--stone)";
+        note.style.marginBottom = "16px";
+        note.textContent = "— Invitation reçue de votre coach. Choisissez un mot de passe pour activer votre espace.";
+        signupForm.insertBefore(note, signupForm.firstChild);
+      } else {
+        const status = document.getElementById("loginStatus");
+        status.textContent = "✗ Ce lien d'invitation est invalide ou a expiré. Contactez votre coach.";
+        status.style.color = "var(--blood)";
+      }
+    }
+
 
     loginForm.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -163,6 +199,11 @@
       const status = document.getElementById("signupStatus");
       status.textContent = "Création du compte…"; status.style.color = "var(--stone)";
       try {
+        if (activeInvite) {
+          data.email = activeInvite.email;
+          data.metrics = activeInvite.metrics || "";
+          data.inviteToken = activeInvite.token;
+        }
         const u = await signUp(data);
         const userObj = u.role ? u : await getCurrentUserWithRole();
         routeAfterLogin(userObj);
@@ -197,5 +238,12 @@
       main > section:first-child { display: none !important; }
     }
   </style>
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./service-worker.js").catch(console.warn);
+      });
+    }
+  </script>
 </body>
 </html>
