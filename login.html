@@ -120,7 +120,7 @@
   </main>
 
   <script type="module">
-    import { signIn, signUp, routeAfterLogin, getCurrentUserWithRole, getInvite, isInviteValid } from "./assets/js/auth.js";
+    import { signIn, signUp, routeAfterLogin, getCurrentUserWithRole, getInvite, isInviteValid } from "./auth.js";
 
     // Auto-redirect if already logged in
     getCurrentUserWithRole().then(u => { if (u) routeAfterLogin(u); });
