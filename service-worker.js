@@ -17,7 +17,6 @@ const STATIC_ASSETS = [
   "./icon-512.png"
 ];
 
-// Installation — mise en cache des assets statiques
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
@@ -27,7 +26,6 @@ self.addEventListener("install", (event) => {
   self.skipWaiting();
 });
 
-// Activation — nettoyage des anciens caches
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
@@ -40,19 +38,16 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
-
   if (!event.request.url.startsWith(self.location.origin)) return;
 
   event.respondWith(
     fetch(event.request)
       .then((response) => {
-
         const clone = response.clone();
         caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
         return response;
       })
       .catch(() => {
-
         return caches.match(event.request).then(
           (cached) => cached || caches.match("./offline.html")
         );
