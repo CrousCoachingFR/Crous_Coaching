@@ -54,7 +54,7 @@
           <div class="kicker">Cliquer sur une ligne pour éditer son espace</div>
         </div>
 
-        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-bottom: 32px; border-top: 4px solid var(--ink); border-bottom: 4px solid var(--ink);">
+        <div class="admin-stats">
           <div style="padding: 24px; border-right: 1px solid var(--ink);">
             <div class="stat-num" style="font-size: 64px; color: var(--blood);" id="countTotal">0</div>
             <div class="kicker" style="color: var(--stone);">Athlètes actifs</div>
@@ -99,7 +99,7 @@
           </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; margin-bottom: 40px;">
+        <div class="grid-meta">
           <div style="border: 1px solid var(--ink); padding: 18px;">
             <div class="kicker" style="color: var(--stone);">Email</div>
             <div id="editEmail" style="font-family: var(--ff-display); font-style: italic; font-size: 22px; margin-top: 4px;">—</div>
@@ -119,11 +119,11 @@
         </div>
 
         <!-- Tabs to switch section -->
-        <div style="display: flex; gap: 0; border-bottom: 1px solid var(--ink); margin-bottom: 32px;">
-          <button class="ed-tab is-active" data-ed="training" style="flex: 1; padding: 16px; font-family: var(--ff-mono); font-size: 12px; letter-spacing: .18em; text-transform: uppercase; cursor: pointer; border-bottom: 4px solid var(--blood); margin-bottom: -1px;">01 — Entraînement</button>
-          <button class="ed-tab" data-ed="diet" style="flex: 1; padding: 16px; font-family: var(--ff-mono); font-size: 12px; letter-spacing: .18em; text-transform: uppercase; cursor: pointer; border-bottom: 4px solid transparent; margin-bottom: -1px; color: var(--stone);">02 — Nutrition</button>
-          <button class="ed-tab" data-ed="protocol" style="flex: 1; padding: 16px; font-family: var(--ff-mono); font-size: 12px; letter-spacing: .18em; text-transform: uppercase; cursor: pointer; border-bottom: 4px solid transparent; margin-bottom: -1px; color: var(--stone);">03 — Protocole</button>
-          <button class="ed-tab" data-ed="notes" style="flex: 1; padding: 16px; font-family: var(--ff-mono); font-size: 12px; letter-spacing: .18em; text-transform: uppercase; cursor: pointer; border-bottom: 4px solid transparent; margin-bottom: -1px; color: var(--stone);">04 — Notes</button>
+        <div class="ed-tabs">
+          <button class="ed-tab is-active" data-ed="training">01 — Entraînement</button>
+          <button class="ed-tab" data-ed="diet">02 — Nutrition</button>
+          <button class="ed-tab" data-ed="protocol">03 — Protocole</button>
+          <button class="ed-tab" data-ed="notes">04 — Notes</button>
         </div>
 
         <div class="ed-panel is-active" data-ed="training">
@@ -245,13 +245,13 @@
               <div class="client-row__name">${escapeHtml(a.displayName || a.email)}</div>
               <div class="client-row__meta">${escapeHtml(a.email)}</div>
             </div>
-            <div class="client-row__meta">${escapeHtml(a.metrics || '—')}</div>
-            <div class="client-row__meta">
+            <div class="client-row__meta client-row__hide">${escapeHtml(a.metrics || '—')}</div>
+            <div class="client-row__meta client-row__hide">
               ${(p.training||[]).length} séance(s) ·
               ${(p.diet||[]).length} repas ·
               ${(p.protocol||[]).length} molécule(s)
             </div>
-            <div class="client-row__meta">Ouvrir →</div>
+            <div class="client-row__meta">→</div>
           </div>
         `;
       }));
@@ -345,9 +345,7 @@
     document.querySelectorAll(".ed-tab").forEach(t => t.addEventListener("click", () => {
       const which = t.dataset.ed;
       document.querySelectorAll(".ed-tab").forEach(x => {
-        const on = x.dataset.ed === which;
-        x.style.borderColor = on ? "var(--blood)" : "transparent";
-        x.style.color = on ? "var(--ink)" : "var(--stone)";
+        x.classList.toggle("is-active", x.dataset.ed === which);
       });
       document.querySelectorAll(".ed-panel").forEach(p => p.style.display = (p.dataset.ed === which) ? "" : "none");
     }));
