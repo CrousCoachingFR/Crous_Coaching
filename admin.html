@@ -75,7 +75,7 @@
 
         <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 16px;">
           <div class="kicker">Roster — édition</div>
-          <button id="addClientBtn" class="btn btn--ghost" style="padding: 12px 18px;">+ Créer un athlète</button>
+          <button id="addClientBtn" class="btn btn--ghost" style="padding: 12px 18px;">+ Inviter un athlète</button>
         </div>
 
         <div id="clientList" style="border-top: 1px solid var(--ink);"></div>
@@ -168,27 +168,37 @@
     </main>
   </div>
 
-  <!-- Modal: add client -->
+  <!-- Modal: invite athlete -->
   <div id="modalClient" class="modal">
     <div class="modal__card">
       <span class="modal__close" id="modalClose">×</span>
       <div class="kicker" style="color: var(--blood);">Nouvel athlète</div>
-      <h2 class="display" style="font-size: 48px; margin: 8px 0 24px;">Créer un espace.</h2>
+      <h2 class="display" style="font-size: 48px; margin: 8px 0 24px;">Générer une invitation.</h2>
+      <p style="font-family: var(--ff-display); font-style: italic; font-size: 16px; color: var(--stone); margin-bottom: 20px;">
+        Le lien généré est valable <strong>48h</strong> et à usage unique. Envoyez-le à l'athlète par WhatsApp —
+        il lui ouvrira directement la création de son espace, email pré-rempli.
+      </p>
       <form id="newClientForm">
         <div class="field"><label>Nom complet</label><input type="text" name="displayName" required/></div>
         <div class="field"><label>Email</label><input type="email" name="email" required/></div>
-        <div class="field"><label>Mot de passe initial</label><input type="password" name="password" minlength="8" required/></div>
         <div class="field"><label>Métriques (optionnel)</label><input type="text" name="metrics" placeholder="ex. 28 ans · 82 kg · 178 cm"/></div>
-        <button type="submit" class="btn" style="margin-top: 24px; width: 100%; justify-content: center;">Créer l'athlète</button>
+        <button type="submit" class="btn" style="margin-top: 24px; width: 100%; justify-content: center;">Générer le lien d'invitation</button>
         <p id="newClientStatus" class="kicker" style="margin-top: 12px; color: var(--blood); min-height: 16px;"></p>
       </form>
+      <div id="inviteResult" style="display:none; margin-top: 8px; border: 1px solid var(--ink); padding: 16px;">
+        <div class="kicker" style="color: var(--stone); margin-bottom: 8px;">Lien d'invitation — expire dans 48h</div>
+        <div style="display:flex; gap: 8px;">
+          <input id="inviteLinkInput" readonly style="flex:1; font-family: var(--ff-mono); font-size: 12px; border: 1px solid var(--ink); padding: 10px; background: var(--paper-2);"/>
+          <button type="button" class="btn btn--ghost" id="copyInviteBtn" style="padding: 10px 16px; font-size: 11px;">Copier</button>
+        </div>
+      </div>
     </div>
   </div>
 
   <div id="toast" class="toast">Enregistré</div>
 
   <script type="module">
-    import { requireAuth, signOutUser, signUp } from "./assets/js/auth.js";
+    import { requireAuth, signOutUser, createInvite } from "./assets/js/auth.js";
     import { loadProfile, saveProfile, newEntry, listAthletes, listInquiries } from "./assets/js/profile.js";
 
     const admin = await requireAuth("admin");
@@ -381,7 +391,13 @@
 
     // ---------- New client modal
     const modal = document.getElementById("modalClient");
-    document.getElementById("addClientBtn").addEventListener("click", () => modal.classList.add("in"));
+    document.getElementById("addClientBtn").addEventListener("click", () => {
+      document.getElementById("newClientForm").reset();
+      document.getElementById("newClientForm").style.display = "";
+      document.getElementById("newClientStatus").textContent = "";
+      document.getElementById("inviteResult").style.display = "none";
+      modal.classList.add("in");
+    });
     document.getElementById("modalClose").addEventListener("click", () => modal.classList.remove("in"));
     modal.addEventListener("click", (e) => { if (e.target === modal) modal.classList.remove("in"); });
 
@@ -389,22 +405,25 @@
       e.preventDefault();
       const data = Object.fromEntries(new FormData(e.target).entries());
       const status = document.getElementById("newClientStatus");
-      status.textContent = "Création…"; status.style.color = "var(--stone)";
+      status.textContent = "Génération du lien…"; status.style.color = "var(--stone)";
       try {
-        // Note: in Firebase mode this signs us out of admin and into the new client.
-        // For demo mode it just adds a record. Safer flow is documented in README.
-        await signUp(data);
-        // restore admin session on demo mode
-        const users = JSON.parse(localStorage.getItem("crous_demo_users") || "{}");
-        if (users[data.email]) { users[data.email].metrics = data.metrics || ""; localStorage.setItem("crous_demo_users", JSON.stringify(users)); }
-        localStorage.setItem("crous_demo_session", admin.email);
-
-        e.target.reset(); modal.classList.remove("in");
-        status.textContent = ""; toast("Athlète créé");
-        await refreshRoster();
+        const token = await createInvite(data);
+        const link = `${window.location.origin}${window.location.pathname.replace(/admin\.html$/, "")}login.html?invite=${token}`;
+        document.getElementById("inviteLinkInput").value = link;
+        document.getElementById("inviteResult").style.display = "";
+        e.target.style.display = "none";
+        status.textContent = "";
+        toast("Invitation générée");
       } catch (err) {
         status.textContent = "✗ " + (err.message || "Erreur"); status.style.color = "var(--blood)";
       }
+    });
+
+    document.getElementById("copyInviteBtn").addEventListener("click", () => {
+      const input = document.getElementById("inviteLinkInput");
+      input.select();
+      navigator.clipboard?.writeText(input.value);
+      toast("Lien copié — collez-le dans WhatsApp");
     });
 
     // ---------- Init
@@ -421,6 +440,13 @@
       el.addEventListener('mouseenter', () => cursor.classList.add('lg'));
       el.addEventListener('mouseleave', () => cursor.classList.remove('lg'));
     });
+  </script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./service-worker.js").catch(console.warn);
+      });
+    }
   </script>
 </body>
 </html>
