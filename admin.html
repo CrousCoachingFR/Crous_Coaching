@@ -198,8 +198,8 @@
   <div id="toast" class="toast">Enregistré</div>
 
   <script type="module">
-    import { requireAuth, signOutUser, createInvite } from "./assets/js/auth.js";
-    import { loadProfile, saveProfile, newEntry, listAthletes, listInquiries } from "./assets/js/profile.js";
+    import { requireAuth, signOutUser, createInvite } from "./auth.js";
+    import { loadProfile, saveProfile, newEntry, listAthletes, listInquiries } from "./profile.js";
 
     const admin = await requireAuth("admin");
     if (!admin) throw new Error("redirect");
