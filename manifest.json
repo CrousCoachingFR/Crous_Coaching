@@ -1,7 +1,7 @@
 {
   "name": "Crous_Coaching",
   "short_name": "C_Coaching",
-  "description": "Espace athlète — entraînement, nutrition & protocole.",
+  "description": "Espace athlète",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
