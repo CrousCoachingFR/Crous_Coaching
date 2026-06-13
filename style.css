@@ -1,3 +1,8 @@
+/* =============================================================
+   CROUS_COACHING — IRON DOCTRINE
+   A strength-sport editorial. Built like a print magazine.
+   ============================================================= */
+
 @import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Bebas+Neue&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
 
 :root {
@@ -49,6 +54,7 @@ button, input, textarea, select {
   outline: none;
 }
 
+/* --- GRAIN OVERLAY (gives every page a printed-paper feel) --- */
 body::before {
   content: "";
   position: fixed;
@@ -61,6 +67,7 @@ body::before {
 }
 body.dark::before { mix-blend-mode: screen; opacity: .22; }
 
+/* --- CUSTOM CURSOR (a small red disc tracks the pointer) --- */
 .cursor-dot {
   position: fixed;
   top: 0; left: 0;
@@ -76,6 +83,9 @@ body.dark::before { mix-blend-mode: screen; opacity: .22; }
 .cursor-dot.lg { width: 36px; height: 36px; }
 @media (pointer: coarse) { .cursor-dot { display: none; } }
 
+/* =============================================================
+   TYPOGRAPHY
+   ============================================================= */
 
 .display {
   font-family: var(--ff-display);
@@ -114,7 +124,9 @@ body.dark .eyebrow { color: #8E8779; }
   text-transform: uppercase;
 }
 
-
+/* =============================================================
+   LAYOUT PRIMITIVES
+   ============================================================= */
 
 .wrap { width: 100%; max-width: var(--measure); margin: 0 auto; padding: 0 var(--gutter); }
 
@@ -123,6 +135,9 @@ body.dark .eyebrow { color: #8E8779; }
 .rule--thick { border-top: 4px solid var(--ink); }
 .dark .rule--thick { border-color: var(--paper); }
 
+/* =============================================================
+   NAVIGATION (top bar — like a magazine masthead)
+   ============================================================= */
 
 .masthead {
   border-bottom: 1px solid var(--ink);
@@ -202,6 +217,9 @@ body.dark .nav-cta { background: var(--paper); color: var(--ink); }
   .nav-links { display: none; }
 }
 
+/* =============================================================
+   BUTTONS
+   ============================================================= */
 
 .btn {
   --bg: var(--ink); --fg: var(--paper);
@@ -238,6 +256,9 @@ body.dark .btn--ghost { --fg: var(--paper); border-color: var(--paper); }
 .btn--blood { --bg: var(--blood); --fg: var(--paper); border-color: var(--blood); }
 .btn--blood::before { background: var(--ink); }
 
+/* =============================================================
+   SECTION HEADER (numbered brutalist labels)
+   ============================================================= */
 
 .section-tag {
   display: flex; align-items: baseline; gap: 18px;
@@ -258,7 +279,9 @@ body.dark .btn--ghost { --fg: var(--paper); border-color: var(--paper); }
   text-transform: uppercase;
 }
 
-
+/* =============================================================
+   MARQUEE
+   ============================================================= */
 
 .marquee {
   border-top: 1px solid currentColor;
@@ -285,6 +308,9 @@ body.dark .btn--ghost { --fg: var(--paper); border-color: var(--paper); }
   to { transform: translateX(-50%); }
 }
 
+/* =============================================================
+   FORM
+   ============================================================= */
 
 .field {
   border-bottom: 1px solid currentColor;
@@ -313,6 +339,9 @@ body.dark .field label { color: #8E8779; }
 .field textarea { resize: vertical; min-height: 80px; }
 .field--active label { color: var(--blood); }
 
+/* =============================================================
+   FOOTER (colophon-style)
+   ============================================================= */
 
 footer.colophon {
   background: var(--ink); color: var(--paper);
@@ -350,6 +379,9 @@ footer.colophon .wrap { padding: 0; }
   .colophon__grid { grid-template-columns: 1fr 1fr; }
 }
 
+/* =============================================================
+   CARDS (used on offers + dashboard)
+   ============================================================= */
 
 .card {
   border: 1px solid currentColor;
@@ -396,6 +428,9 @@ footer.colophon .wrap { padding: 0; }
 .card--ink .card__price small,
 .card--blood .card__price small { color: rgba(255,255,255,.55); }
 
+/* =============================================================
+   TAGS
+   ============================================================= */
 
 .tag {
   display: inline-flex; align-items: center; gap: 6px;
@@ -406,10 +441,12 @@ footer.colophon .wrap { padding: 0; }
   letter-spacing: .18em;
   text-transform: uppercase;
 }
-
 .tag--blood { background: var(--blood); color: var(--paper); border-color: var(--blood); }
 .tag--ghost { background: transparent; }
 
+/* =============================================================
+   UTILITIES
+   ============================================================= */
 
 .flex { display: flex; }
 .grid { display: grid; }
@@ -424,6 +461,9 @@ footer.colophon .wrap { padding: 0; }
 }
 .reveal.in { opacity: 1; transform: none; }
 
+/* =============================================================
+   DASHBOARD-SPECIFIC
+   ============================================================= */
 
 .shell {
   display: grid;
@@ -495,6 +535,7 @@ footer.colophon .wrap { padding: 0; }
   vertical-align: super; margin-right: 12px;
 }
 
+/* Editor rows for training/diet/protocol */
 .entry-list { display: grid; gap: 0; border-top: 1px solid var(--ink); }
 .entry {
   display: grid;
@@ -536,6 +577,7 @@ footer.colophon .wrap { padding: 0; }
   .entry__del { text-align: left; }
 }
 
+/* Admin client list */
 .client-row {
   display: grid;
   grid-template-columns: 60px 1fr 1fr 1fr auto;
@@ -554,6 +596,7 @@ footer.colophon .wrap { padding: 0; }
 .client-row__meta { font-family: var(--ff-mono); font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--stone); }
 .client-row:hover .client-row__meta { color: #8E8779; }
 
+/* Toast */
 .toast {
   position: fixed; bottom: 24px; left: 50%;
   transform: translateX(-50%) translateY(80px);
@@ -566,6 +609,7 @@ footer.colophon .wrap { padding: 0; }
 }
 .toast.in { transform: translateX(-50%) translateY(0); }
 
+/* Modal */
 .modal {
   position: fixed; inset: 0;
   background: rgba(10,9,8,.7);
@@ -586,321 +630,193 @@ footer.colophon .wrap { padding: 0; }
   cursor: pointer;
 }
 
+/* =============================================================
+   ░░ MOBILE / RESPONSIVE OVERHAUL ░░
+   Ajouté pour rendre l'ensemble du site — et surtout l'espace
+   athlète — aussi soigné sur téléphone que sur ordinateur.
+   La plupart des grilles du site sont en styles inline ; on les
+   neutralise ici via des sélecteurs d'attribut + !important.
+   ============================================================= */
 
-
+/* Filet de sécurité : jamais de scroll horizontal sur mobile */
 html, body { overflow-x: hidden; }
+img, svg, table { max-width: 100%; }
 
-@media (max-width: 760px) {
-  .masthead__inner {
-    grid-template-columns: 1fr auto;
-    padding: 12px var(--gutter);
-  }
-  .nav-links { display: none; }
-  .nav-cta   { display: none; }
-}
-
-.grid-3 {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-}
-@media (max-width: 900px) {
-  .grid-3 { grid-template-columns: 1fr; }
-  .grid-3 > .grid-spacer { display: none; }
+/* ---------- TABLETTE (≤ 1024px) -------------------------------
+   Les grilles à 3 ou 4 colonnes passent à 2 colonnes.            */
+@media (max-width: 1024px) {
+  [style*="repeat(3"] { grid-template-columns: repeat(2, 1fr) !important; }
+  [style*="repeat(4"] { grid-template-columns: repeat(2, 1fr) !important; }
+  /* Les <div></div> vides servant de cale (centrage des cartes)
+     ne gênent pas en 2 colonnes. */
 }
 
-.grid-4 {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0;
-}
-@media (max-width: 640px) {
-  .grid-4 { grid-template-columns: 1fr 1fr; }
+/* ---------- TÉLÉPHONE (≤ 768px) -------------------------------
+   Toutes les grilles inline passent en pleine largeur (1 col).   */
+@media (max-width: 768px) {
+
+  /* Effondre TOUTE grille inline multi-colonnes */
+  [style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+
+  /* Réduit les très grands écarts inline */
+  [style*="gap: 80px"] { gap: 32px !important; }
+  [style*="gap: 60px"] { gap: 28px !important; }
+  [style*="gap: 48px"] { gap: 24px !important; }
+  [style*="gap: 40px"] { gap: 22px !important; }
+
+  /* Réduit les paddings de section verticaux énormes */
+  [style*="padding: 120px 0"] { padding-top: 56px !important; padding-bottom: 56px !important; }
+  [style*="padding: 100px 0"] { padding-top: 48px !important; padding-bottom: 48px !important; }
+  [style*="padding: 80px 0 40px"] { padding: 44px 0 24px !important; }
+
+  /* Titres géants : on borne pour éviter tout débordement */
+  [style*="clamp(64px"] { font-size: clamp(40px, 12vw, 66px) !important; }
+  [style*="clamp(56px, 9vw"] { font-size: clamp(40px, 12vw, 64px) !important; }
+  [style*="clamp(48px, 9vw"] { font-size: clamp(38px, 11vw, 60px) !important; }
+  .display, .panel-head h1, blockquote.display { word-break: break-word; }
+
+  /* Marges internes des colonnes (manifeste en 2 colonnes texte) */
+  [style*="columns: 2"] { columns: 1 !important; }
+
+  /* CTA / boutons pleine largeur plus confortables au pouce */
+  .btn { padding: 16px 22px; }
+
+  /* Pied de page en une colonne */
+  .colophon__grid { grid-template-columns: 1fr !important; gap: 28px; }
+  .colophon__bottom { gap: 8px; }
 }
 
-.grid-2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-}
-@media (max-width: 760px) {
-  .grid-2 { grid-template-columns: 1fr; }
-}
-
-.grid-hero {
-  display: grid;
-  grid-template-columns: 1.4fr 1fr;
-  gap: 60px;
-  border-top: 1px solid var(--ink);
-  padding-top: 32px;
-}
-@media (max-width: 760px) {
-  .grid-hero { grid-template-columns: 1fr; gap: 32px; }
-  .grid-hero .hero-stats { display: none; }
-}
-
-.grid-apply {
-  display: grid;
-  grid-template-columns: 1fr 1.4fr;
-  gap: 80px;
-}
-@media (max-width: 880px) {
-  .grid-apply { grid-template-columns: 1fr; gap: 40px; }
-}
-
-.grid-meta {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 24px;
-  margin-bottom: 40px;
-}
-@media (max-width: 640px) {
-  .grid-meta { grid-template-columns: 1fr; gap: 12px; }
-}
-
-@media (max-width: 640px) {
-  .section-pad { padding: 48px 0 !important; }
-  .section-pad-lg { padding: 64px 0 !important; }
-}
-
-@media (max-width: 640px) {
-  .hero-cover-bar {
-    display: block !important;
-  }
-  .hero-cover-bar > div { text-align: left !important; }
-}
-
-@media (max-width: 640px) {
-  .display-hero { font-size: clamp(52px, 13vw, 100px) !important; }
-  .display-section { font-size: clamp(36px, 9vw, 64px) !important; }
-}
-
-@media (max-width: 640px) {
-  .marquee__track { font-size: 26px; gap: 24px; }
-}
-
-@media (max-width: 640px) {
-  .card { padding: 22px; gap: 14px; }
-  .card__title { font-size: 28px; }
-  .stat-num { font-size: 64px !important; }
-}
-
+/* ---------- ESPACE ATHLÈTE / ADMIN (≤ 880px) ------------------
+   La barre latérale devient une barre supérieure compacte,
+   collante, avec une navigation horizontale défilante.           */
 @media (max-width: 880px) {
   .shell { grid-template-columns: 1fr; }
-  .shell__side { position: relative; height: auto; padding: 16px; }
+
+  /* IMPORTANT : sans ceci, la nav horizontale (liens en nowrap) impose
+     sa largeur de contenu au conteneur et déborde. min-width:0 autorise
+     les items de la grille à rétrécir → la nav devient réellement défilante. */
+  .shell > * { min-width: 0; }
+
+  .shell__side {
+    position: sticky; top: 0; z-index: 60;
+    height: auto;
+    min-width: 0;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px var(--gutter);
+    border-bottom: 1px solid var(--blood);
+  }
+
+  /* On masque le petit libellé "Espace athlète privé / Console admin"
+     pour gagner de la hauteur en haut d'écran */
+  .shell__side > .kicker { display: none; }
+
+  /* Navigation horizontale, défilante au doigt, sans scrollbar visible */
   .side-nav {
     flex-direction: row;
-    flex-wrap: wrap;
+    margin-top: 0;
+    min-width: 0;
+    gap: 2px;
     overflow-x: auto;
-    margin-top: 12px;
-    gap: 4px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+    /* Léger fondu à droite : indique visuellement qu'on peut faire défiler */
+    -webkit-mask-image: linear-gradient(to right, #000 90%, transparent 100%);
+            mask-image: linear-gradient(to right, #000 90%, transparent 100%);
   }
+  .side-nav::-webkit-scrollbar { display: none; }
   .side-nav a {
-    padding: 8px 10px;
-    font-size: 10px;
-    border-left: none;
-    border-bottom: 2px solid transparent;
     white-space: nowrap;
+    border-left: 0;
+    border-bottom: 2px solid transparent;
+    padding: 9px 13px;
   }
   .side-nav a.is-active {
+    border-left: 0;
     border-bottom-color: var(--blood);
     background: rgba(181,39,28,.12);
   }
-  .shell__main { padding: 20px 16px; }
-}
 
-.dash-cards {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-}
-@media (max-width: 880px) {
-  .dash-cards { grid-template-columns: 1fr; }
-}
-
-@media (max-width: 640px) {
-  .panel-head { flex-direction: column; align-items: flex-start; gap: 8px; }
-  .panel-head h1 { font-size: clamp(30px, 8vw, 56px) !important; }
-}
-
-@media (max-width: 720px) {
-  .entry {
-    grid-template-columns: 56px 1fr !important;
-    gap: 6px;
+  .shell__user {
+    margin-top: 0;
+    padding-top: 12px;
   }
+
+  .shell__main { padding: 24px var(--gutter) 56px; }
+}
+
+
+@media (max-width: 768px) {
+  .entry {
+    grid-template-columns: auto 1fr !important;
+    gap: 2px 14px;
+    padding: 18px 0;
+    align-items: start;
+  }
+  .entry__day { grid-row: span 2; font-size: 32px; line-height: 1; }
+  .entry__name { font-size: 20px; }
   .entry__meta { grid-column: 2; }
-  .entry__del  { grid-column: 2; text-align: left; }
-  .entry-form  { grid-template-columns: 1fr !important; }
+  .entry__del {
+    grid-column: 1 / -1;
+    text-align: left;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--stone);
+  }
+
+  .entry-form {
+    grid-template-columns: 1fr !important;
+    gap: 14px;
+    padding: 20px 0;
+  }
+  .entry-form .btn { width: 100%; justify-content: center; }
+}
+
+
+@media (max-width: 768px) {
+  [style*="border-bottom: 1px solid var(--ink); margin-bottom: 32px"] {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  [style*="border-bottom: 1px solid var(--ink); margin-bottom: 32px"]::-webkit-scrollbar { display: none; }
+  .ed-tab {
+    flex: 0 0 auto !important;
+    padding: 13px 16px !important;
+    font-size: 11px !important;
+    letter-spacing: .08em !important;
+    white-space: nowrap;
+    line-height: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .client-row {
+    grid-template-columns: auto 1fr !important;
+    gap: 4px 14px;
+    padding: 16px 0;
+    align-items: start;
+  }
+  .client-row__num { grid-row: span 3; font-size: 28px; }
+  .client-row:hover { padding-left: 0; padding-right: 0; background: transparent; color: inherit; }
+  .client-row:active { background: var(--ink); color: var(--paper); }
 }
 
 @media (max-width: 760px) {
-  .client-row { grid-template-columns: 40px 1fr auto !important; }
-  .client-row__hide { display: none; }
-}
-
-.admin-stats {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0;
-  margin-bottom: 32px;
-  border-top: 4px solid var(--ink);
-  border-bottom: 4px solid var(--ink);
-}
-@media (max-width: 640px) {
-  .admin-stats { grid-template-columns: 1fr 1fr; }
-  .admin-stats > div { border-right: none !important; border-bottom: 1px solid var(--ink); }
-}
-
-.ed-tabs {
-  display: flex;
-  gap: 0;
-  border-bottom: 1px solid var(--ink);
-  margin-bottom: 32px;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-.ed-tab {
-  flex: 0 0 auto;
-  padding: 14px 12px;
-  font-family: var(--ff-mono);
-  font-size: 11px;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  cursor: pointer;
-  border-bottom: 4px solid transparent;
-  margin-bottom: -1px;
-  color: var(--stone);
-  white-space: nowrap;
-}
-.ed-tab.is-active { border-bottom-color: var(--blood); color: var(--ink); }
-
-.login-grid {
-  min-height: 100vh;
-  display: grid;
-  grid-template-columns: 1.1fr 1fr;
-}
-@media (max-width: 880px) {
-  .login-grid { grid-template-columns: 1fr; }
-  .login-left  { display: none; }
-}
-
-@media (max-width: 600px) {
-  .modal { padding: 0; align-items: flex-end; }
-  .modal__card { max-width: 100%; padding: 28px 20px 40px; }
-}
-
-@media (max-width: 640px) {
-  footer.colophon { padding: 40px 16px 24px; margin-top: 0; }
-  .colophon__grid { grid-template-columns: 1fr 1fr !important; gap: 24px; }
-  .colophon__bottom { flex-direction: column; gap: 6px; }
-}
-@media (max-width: 400px) {
-  .colophon__grid { grid-template-columns: 1fr !important; }
-}
-
-@media (max-width: 480px) {
-  .btn-group { flex-direction: column; }
-  .btn-group .btn { width: 100%; justify-content: center; }
-}
-
-@media (max-width: 640px) {
-  .coaching-table th,
-  .coaching-table td { padding: 10px 4px !important; font-size: 13px; }
-}
-
-@media (max-width: 640px) {
-  .manifeste-cols { columns: 1 !important; }
-}
-
-@media (max-width: 640px) {
-  .hero { padding-bottom: 32px; }
-  .wrap { padding-left: 16px; padding-right: 16px; }
+  .masthead__inner { gap: 12px; padding: 12px var(--gutter); }
+  .brand { font-size: 19px; }
 }
 
 
-@media (max-width: 760px) {
-  .client-row__hide { display: none; }
-  .client-row { grid-template-columns: 40px 1fr auto !important; }
-}
+@media (max-width: 768px) {
+  [style*="grid-template-columns: 1fr 1fr 1fr"] > div[style*="border: 1px solid var(--ink); padding: 18px"] {
+    padding: 14px 16px !important;
+  }
+  [style*="grid-template-columns: 1fr 1fr 1fr"] { gap: 12px !important; margin-bottom: 28px !important; }
 
+  .panel-head { margin-bottom: 24px; padding-bottom: 14px; }
 
-.burger {
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  gap: 5px;
-  width: 36px;
-  height: 36px;
-  cursor: pointer;
-  background: none;
-  border: none;
-  padding: 4px;
-  z-index: 200;
-}
-.burger span {
-  display: block;
-  width: 100%;
-  height: 2px;
-  background: currentColor;
-  border-radius: 2px;
-  transition: transform .3s cubic-bezier(.2,.7,.3,1), opacity .3s;
-  transform-origin: center;
-}
-.burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-.burger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-.burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-@media (max-width: 760px) {
-  .burger { display: flex; }
-  .nav-cta { display: none; }
-}
-
-.nav-drawer {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: var(--ink);
-  color: var(--paper);
-  z-index: 150;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 48px var(--gutter);
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(-12px);
-  transition: opacity .35s cubic-bezier(.2,.7,.3,1), transform .35s cubic-bezier(.2,.7,.3,1);
-}
-.nav-drawer.open {
-  opacity: 1;
-  pointer-events: all;
-  transform: none;
-}
-.nav-drawer nav {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.nav-drawer nav a {
-  font-family: var(--ff-display);
-  font-style: italic;
-  font-weight: 300;
-  font-size: clamp(40px, 10vw, 72px);
-  line-height: 1.05;
-  letter-spacing: -.02em;
-  color: var(--paper);
-  border-bottom: 1px solid #2A2724;
-  padding: 12px 0;
-  transition: color .2s, padding-left .2s;
-}
-.nav-drawer nav a:hover { color: var(--blood); padding-left: 12px; }
-.nav-drawer .drawer-cta {
-  margin-top: 32px;
-}
-.nav-drawer .drawer-footer {
-  margin-top: auto;
-  font-family: var(--ff-mono);
-  font-size: 11px;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: #8E8779;
+  .card { padding: 24px; }
+  .card .stat-num[style*="88px"] { font-size: 66px !important; }
 }
