@@ -3,15 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Crous_Coaching</title>
-  <link rel="stylesheet" href="style.css" />
-
-  <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#1A1612" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="C_Coaching" />
-  <link rel="apple-touch-icon" href="icon-192.png" />
+  <title>Crous_Coaching — Postuler</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body>
 
@@ -27,31 +20,18 @@
         <a href="index.html">Doctrine</a>
         <a href="coaching.html" class="is-active">Coaching</a>
         <a href="index.html#manifeste">Manifeste</a>
+        <a href="index.html#resultats">Résultats</a>
         <a href="login.html">Espace athlète</a>
       </nav>
       <a href="#postuler" class="nav-cta">Postuler</a>
-      <button class="burger" id="burgerBtn" aria-label="Menu">
-        <span></span><span></span><span></span>
-      </button>
     </div>
   </header>
-
-  <div class="nav-drawer" id="navDrawer">
-    <nav>
-      <a href="index.html">Doctrine</a>
-      <a href="coaching.html">Coaching</a>
-      <a href="index.html#manifeste">Manifeste</a>
-      <a href="login.html">Espace athlète</a>
-    </nav>
-    <a href="#postuler" class="btn drawer-cta" style="margin-top: 40px; align-self: flex-start; border-color: var(--paper); color: var(--paper);">Postuler →</a>
-    <div class="drawer-footer">© 2026 Crous_Coaching</div>
-  </div>
 
   <section style="border-bottom: 1px solid var(--ink); padding: 80px 0 40px;">
     <div class="wrap">
       <div class="kicker" style="margin-bottom: 24px;">— Programmes 2026 / Vol. II</div>
       <h1 class="display" style="font-size: clamp(64px, 13vw, 200px); max-width: 12ch;">
-        Un <em>cadre</em>. Une exigence.
+        Trois <em>cadres</em>. Une exigence.
       </h1>
       <p style="font-family: var(--ff-display); font-style: italic; font-size: clamp(20px, 2vw, 28px); max-width: 60ch; margin-top: 32px; font-weight: 300;">
         Chaque programme est conçu pour un type d'athlète précis.
@@ -66,9 +46,9 @@
         <div class="section-tag__txt">Choisir un cadre</div>
       </div>
 
-      <div class="grid-3">
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
 
-        <div class="grid-spacer"></div>
+        <div></div>
         <article class="card">
           <div class="card__num">N°01 — Essentiel</div>
           <h3 class="card__title">Foundation</h3>
@@ -77,23 +57,17 @@
             Idéal en sortie d'autodidactie.
           </p>
           <ul>
-            li>Support WhatsApp</li>
-            <li>Plan macros & timing</li>
+            <li>Plan nutrition initial</li>
+            <li>Support WhatsApp</li>
             <li>Accès espace athlète</li>
-            <li>Ajustements en cours de cycle</li>
-            <li>Refonte du plan alimentaire suivant tes convenances</li>
-            <li>Refonte du plan training en fonction de tes besoins</li>
-            <li>Aide à une analyse bloodwork</li>
-            <li>Choix molécules &amp; dosages</li>
-            <li>Suivi marqueurs santé</li>
           </ul>
           <div class="card__price">
-            75<small style="display:inline; font-size: 28px;">€</small>
-            <small>Mois : engagement 1 mois</small>
+            149<small style="display:inline; font-size: 28px;">€</small>
+            <small>Mois - engagement 1 mois</small>
           </div>
           <a href="#postuler" class="btn btn--ghost" style="margin-top: 16px;">Postuler →</a>
         </article>
-        <div class="grid-spacer"></div>
+        <div></div>
 
       </div>
 
@@ -122,8 +96,8 @@
           <tr style="border-bottom: 1px solid var(--ink);"><td style="padding: 14px 0;">Programmation entraînement</td><td style="text-align: center;">Hebdo.</td></tr>
           <tr style="border-bottom: 1px solid var(--ink);"><td style="padding: 14px 0;">Nutrition</td><td style="text-align: center;">Initiale</td></tr>
           <tr style="border-bottom: 1px solid var(--ink);"><td style="padding: 14px 0;">Support</td><td style="text-align: center;">WhatsApp · 7/7</td></tr>
-          <tr style="border-bottom: 1px solid var(--ink);"><td style="padding: 14px 0;">Suivi protocole</td><td style="text-align: center;">✓</td></tr>
-          <tr style="border-bottom: 1px solid var(--ink);"><td style="padding: 14px 0;">Bloodwork pris en charge</td><td style="text-align: center;">✓</td></tr>
+          <tr style="border-bottom: 1px solid var(--ink);"><td style="padding: 14px 0;">Suivi protocole</td><td style="text-align: center;">—</td></tr>
+          <tr style="border-bottom: 1px solid var(--ink);"><td style="padding: 14px 0;">Bloodwork pris en charge</td><td style="text-align: center;">—</td></tr>
         </tbody>
       </table>
     </div>
@@ -136,19 +110,19 @@
         <div class="section-tag__txt">Candidater — formulaire d'entretien</div>
       </div>
 
-      <div class="grid-apply">
+      <div style="display: grid; grid-template-columns: 1fr 1.4fr; gap: 80px;">
 
         <aside>
           <h2 class="display" style="font-size: clamp(40px, 6vw, 84px);">
             Une <em>candidature</em> sérieuse mérite des réponses sérieuses.
           </h2>
           <p style="font-family: var(--ff-display); font-style: italic; font-size: 20px; margin-top: 24px; max-width: 36ch;">
-            Réponse sous 48h. Si je ne peux pas vous accompagner, je vous le dirai franchement.
+            Réponse personnelle sous 48h. Aucun automatisme. Si je ne peux pas vous accompagner, je vous le dirai franchement.
           </p>
           <div style="margin-top: 40px; padding-top: 24px; border-top: 4px solid var(--ink);">
             <div class="kicker">Disponibilité actuelle</div>
             <div style="display: flex; gap: 12px; align-items: baseline; margin-top: 8px;">
-              <span class="stat-num" style="font-size: 56px;">??</span>
+              <span class="stat-num" style="font-size: 56px;">3</span>
             </div>
           </div>
         </aside>
@@ -247,10 +221,8 @@
     </div>
   </footer>
 
-  <div id="toast" class="toast">Candidature envoyée, une réponse vous sera transmise dans les plus brefs délais.</div>
-
   <script type="module">
-    import { firebaseConfig } from "./firebase-config.js";
+    import { firebaseConfig } from "./assets/js/firebase-config.js";
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -264,7 +236,6 @@
 
     const form = document.getElementById("inquiryForm");
     const status = document.getElementById("formStatus");
-    const toast = document.getElementById("toast");
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -287,8 +258,6 @@
         form.reset();
         status.textContent = "✓ Candidature reçue. Je reviens vers vous sous 48h.";
         status.style.color = "var(--blood)";
-        toast.classList.add("in");
-        setTimeout(() => toast.classList.remove("in"), 3500);
       } catch (err) {
         console.error(err);
         status.textContent = "Erreur — merci de réessayer ou écrire à hello@crous-coaching.fr";
@@ -312,29 +281,5 @@
     });
   </script>
 
-  <script>
-    const burgerBtn = document.getElementById('burgerBtn');
-    const navDrawer = document.getElementById('navDrawer');
-    burgerBtn.addEventListener('click', () => {
-      burgerBtn.classList.toggle('open');
-      navDrawer.classList.toggle('open');
-      document.body.style.overflow = navDrawer.classList.contains('open') ? 'hidden' : '';
-    });
-    navDrawer.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => {
-        burgerBtn.classList.remove('open');
-        navDrawer.classList.remove('open');
-        document.body.style.overflow = '';
-      });
-    });
-  </script>
-
-  <script>
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register("./service-worker.js").catch(console.warn);
-      });
-    }
-  </script>
 </body>
 </html>
