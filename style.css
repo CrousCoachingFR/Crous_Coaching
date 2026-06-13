@@ -820,3 +820,86 @@ img, svg, table { max-width: 100%; }
   .card { padding: 24px; }
   .card .stat-num[style*="88px"] { font-size: 66px !important; }
 }
+
+/* --- Grilles sémantiques (remplacent les grilles inline) --- */
+.grid-hero {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 60px;
+  border-top: 1px solid var(--ink);
+  padding-top: 32px;
+}
+.grid-2 { display: grid; grid-template-columns: 1fr 2fr; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+
+@media (max-width: 768px) {
+  .grid-hero { grid-template-columns: 1fr; gap: 32px; }
+  .grid-2    { grid-template-columns: 1fr; }
+  .grid-3    { grid-template-columns: 1fr; }
+  .grid-spacer { display: none; }
+}
+
+/* --- Bouton burger (visible seulement sur mobile) --- */
+.burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 42px; height: 42px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+.burger span {
+  display: block;
+  width: 24px; height: 2px;
+  background: var(--ink);
+  transition: transform .3s, opacity .3s;
+}
+body.dark .burger span { background: var(--paper); }
+.burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.burger.open span:nth-child(2) { opacity: 0; }
+.burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* --- Tiroir de navigation (menu mobile plein écran, caché par défaut) --- */
+.nav-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: var(--ink);
+  color: var(--paper);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px var(--gutter);
+  transform: translateX(100%);
+  visibility: hidden;
+  transition: transform .4s cubic-bezier(.2,.7,.3,1), visibility .4s;
+}
+.nav-drawer.open { transform: translateX(0); visibility: visible; }
+.nav-drawer nav { display: flex; flex-direction: column; gap: 6px; }
+.nav-drawer nav a {
+  font-family: var(--ff-display);
+  font-style: italic;
+  font-size: clamp(36px, 9vw, 52px);
+  line-height: 1.1;
+  color: var(--paper);
+}
+.nav-drawer nav a:hover,
+.nav-drawer nav a:active { color: var(--blood); }
+.drawer-footer {
+  position: absolute;
+  left: var(--gutter); bottom: 36px;
+  font-family: var(--ff-mono); font-size: 11px;
+  letter-spacing: .16em; text-transform: uppercase;
+  color: #8E8779;
+}
+
+/* --- Masthead sur mobile : brand + burger, on masque liens & CTA --- */
+@media (max-width: 760px) {
+  .masthead__inner { display: flex; justify-content: space-between; align-items: center; }
+  .nav-cta { display: none; }
+  .burger  { display: flex; }
+}
+
